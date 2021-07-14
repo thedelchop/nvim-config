@@ -56,16 +56,18 @@ require('packer').startup(function()
   use 'christoomey/vim-tmux-runner'                        -- A simple, vimscript only, command runner for sending commands from vim to tmux.
   use 'christoomey/vim-tmux-navigator'                     -- Navigate in and out of Vim and Tmux seamlessly
 
-  use 'alvan/vim-closetag'                                 -- Auto close HTML tags
-  use 'AndrewRadev/splitjoin.vim'                          -- Switch between one-line and multi-line version of code objects
-  use 'b3nj5m1n/kommentary'                                -- Neovim plugin to comment text in and out, written in lua. Supports commenting out the current line, a visual selection and a motion.
-  use 'tpope/vim-rails'                                    -- Vim plugin for editing Ruby on Rails applications.
-  use 'vim-test/vim-test'                                  -- A Vim wrapper for running tests on different granularities.
   use 'tpope/vim-surround'                                 -- The plugin provides mappings to easily delete, change and add such surroundings in pairs.
   use 'tpope/vim-projectionist'                            -- Set of use utilities to define things like alternate files and jump locations for all projects
+  use 'tpope/vim-rails'                                    -- Vim plugin for editing Ruby on Rails applications.
+  use 'tpope/vim-repeat'                                   -- Repeat.vim remaps . in a way that plugins can tap into it.
+
+  use 'AndrewRadev/splitjoin.vim'                          -- Switch between one-line and multi-line version of code objects
+  use 'alvan/vim-closetag'                                 -- Auto close HTML tags
+  use 'b3nj5m1n/kommentary'                                -- Neovim plugin to comment text in and out, written in lua. Supports commenting out the current line, a visual selection and a motion.
+  use 'vim-test/vim-test'                                  -- A Vim wrapper for running tests on different granularities.
   use 'matze/vim-move'                                     -- Move text objects up/down indent/dedent using keyboard shorcuts
   use 'farmergreg/vim-lastplace'                           -- Return to the same location in a file when reopening/revisiting it
-  use 'vim-scripts/BufOnly.vim'                             -- Provides BufOnly command to close all other buffers
+  use 'vim-scripts/BufOnly.vim'                            -- Provides BufOnly command to close all other buffers
 
   use 'kana/vim-textobj-user'                              -- Define custom text objects and provides a set of text objects to use
   use 'amiralies/vim-textobj-elixir'                       -- Provide custom textobjs for Elixir specific syntax
@@ -93,7 +95,12 @@ require('packer').startup(function()
           file_ignore_patterns = {},
           generic_sorter =  require'telescope.sorters'.get_generic_fuzzy_sorter,
           color_devicons = true,
-          use_less = true
+          use_less = true,
+          mappings = {
+            i = {
+              ["jk"] = require('telescope.actions').close
+            }
+          }
         },
         pickers = {
           git_files = {
@@ -103,6 +110,22 @@ require('packer').startup(function()
           buffers = {
             previewer = false,
             theme = "dropdown"
+          },
+          git_branches = {
+            layout_strategy = "horizontal",
+            sort_lastused = true
+
+          },
+          git_bcommits = {
+            layout_strategy = "horizontal"
+
+          },
+          git_commits = {
+            layout_strategy = "horizontal"
+          },
+          current_buffer_fuzzy_find = {
+            previewer = false,
+            layout_strategy = "vertical"
           }
         }
       }
@@ -234,10 +257,30 @@ nnoremap('<leader>wd', ':q<CR>')
 nnoremap('<leader>wD', ':q!<CR>')
 nnoremap('<leader>wc', ':only<CR>')
 
+nnoremap('<leader>rf', ':Telescope registers<CR>')
+
+nnoremap('<leader>gb', ':Telescope git_branches<CR>')
+nnoremap('<leader>gc', ':Telescope git_bcommits<CR>')
+nnoremap('<leader>gC', ':Telescope git_commits<CR>')
+nnoremap('<leader>gs', ':Telescope git_status<CR>')
+
+nnoremap('<leader>lr', ':Telescope lsp_references<CR>')
+nnoremap('<leader>li', ':Telescope lsp_implementations<CR>')
+nnoremap('<leader>ld', ':Telescope lsp_definitions<CR>')
+nnoremap('<leader>ls', ':Telescope lsp_document_symbols<CR>')
+nnoremap('<leader>lS', ':Telescope lsp_workspace_symbols<CR>')
+nnoremap('<leader>la', ':Telescope lsp_code_actions<CR>')
+
+
+nnoremap('<leader>hf', ':Telescope help_tags<CR>')
+nnoremap('<leader><leader>', ':Telescope commands<CR>')
+nnoremap('<leader>mf', ':Telescope man_pages<CR>')
+
 nnoremap('<leader>qq', ':qa<CR>')
 nnoremap('<leader>QQ', ':qall!<CR>')
 
 nnoremap('<leader>s/', ":Telescope live_grep<CR>")
+nnoremap('<leader>sb', ":Telescope current_buffer_fuzzy_find<CR>")
 nnoremap('<leader>sc', ':nohlsearch<CR>')
 
 opt.foldmethod = "manual"
