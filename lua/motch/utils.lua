@@ -58,6 +58,11 @@ M.inoremap = function(from, to, opts)
   vim.api.nvim_set_keymap("i", from, to, opts)
 end
 
+M.vnoremap = function(from, to, opts)
+  opts = vim.tbl_extend("force", {noremap = true, silent = true}, opts or {})
+  vim.api.nvim_set_keymap("v", from, to, opts)
+end
+
 M.smap = function(from, to, opts)
   vim.api.nvim_set_keymap("s", from, to, opts or {})
 end

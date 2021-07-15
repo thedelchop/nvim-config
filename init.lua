@@ -1,8 +1,11 @@
 local fn = vim.fn                                       -- to call Vim functions e.g. fn.bufnr()
 local g = vim.g                                         -- a table to access global variables
 local opt = vim.opt                                     -- to set options
+local cmd = vim.cmd
 
 local nnoremap = require("motch.utils").nnoremap
+local inoremap = require("motch.utils").inoremap
+local vnoremap = require("motch.utils").vnoremap
 
 opt.autoread = true
 opt.background = "dark"
@@ -81,7 +84,43 @@ require('packer').startup(function()
   use {'npxbr/glow.nvim', run = ":GlowInstall"}            -- Glow is a markdown preview plugin using Glow library
 
   use 'neovim/nvim-lspconfig'                              -- provides lsp servers for nvim lsp client
-  use 'hrsh7th/nvim-compe'                                 -- provide autocompletion
+  use {                                                    -- provide autocompletion
+    'hrsh7th/nvim-compe',
+    config = function()
+      require("compe").setup {
+        enabled = true,
+        autocomplete = true,
+        debug = false,
+        min_length = 1,
+        preselect = "disabeld",
+        throttle_time = 80,
+        source_timeout = 200,
+        incomplete_delay = 400,
+        max_abbr_width = 100,
+        max_kind_width = 100,
+        max_menu_width = 100,
+        documentation = {
+          border = { '', '' ,'', ' ', '', '', '', ' ' }, -- the border option is the same as `|help nvim_open_win|`
+          winhighlight = "NormalFloat:CompeDocumentation,FloatBorder:CompeDocumentationBorder",
+          max_width = 360,
+          min_width = 60,
+          max_height = math.floor(vim.o.lines * 0.3),
+          min_height = 1,
+        },
+        source = {
+          path = true,
+          buffer = true,
+          calc = false,
+          vsnip = true,
+          nvim_lsp = true,
+          nvim_lua = true,
+          spell = true,
+          tags = false,
+          treesitter = false
+        }
+      }
+    end
+  }
   use 'hrsh7th/vim-vsnip'                                  -- Allow vim to use LSP snippets
   use 'hrsh7th/vim-vsnip-integ'                            -- Integrations with man of the common LSP/completion libs
   use 'rafamadriz/friendly-snippets'                       -- Snippets collection for a set of different programming languages for faster development.
@@ -152,7 +191,6 @@ require('packer').startup(function()
     requires = 'kyazdani42/nvim-web-devicons'
   }
 
-  use 'voldikss/vim-floaterm'                              -- Use (neo)vim terminal in the floating/popup window.
   use {'glepnir/lspsaga.nvim', config = function()         -- Looks cool, provides a UI for Vim LSP
     require('lspsaga').init_lsp_saga()
   end}
@@ -268,17 +306,20 @@ nnoremap('<Leader>ff', ":Telescope git_files<CR>")
 nnoremap('<Leader>fF', ":Telescope oldfiles<CR>")
 nnoremap('<Leader>fs', ":w<CR>")
 
-nnoremap('<leader>bn', ':BufferLineCycleNext<CR>')
+nnoremap(']b', ':BufferLineCycleNext<CR>')
+nnoremap('[b', ':BufferLineCycleNext<CR>')
 nnoremap('<leader>bp', ':BufferLineCyclePrev<CR>')
 nnoremap('<leader>bd', ':bd<CR>')
 nnoremap('<leader>bc', ':BufOnly<CR>')
-nnoremap('<leader>bf', ':Telescope buffers<CR>')
+nnoremap('<leader>bl', ':Telescope buffers<CR>')
+nnoremap('<leader>bf', '<CMD>lua vim.lsp.buf.formatting()<CR>')
 
 nnoremap('<leader>wv', ':vsplit<CR>')
 nnoremap('<leader>ws', ':split<CR>')
 nnoremap('<leader>wd', ':q<CR>')
 nnoremap('<leader>wD', ':q!<CR>')
 nnoremap('<leader>wc', ':only<CR>')
+nnoremap('<leader>w=', '<C-W>=')
 
 nnoremap('<leader>rf', ':Telescope registers<CR>')
 
@@ -287,12 +328,25 @@ nnoremap('<leader>gc', ':Telescope git_bcommits<CR>')
 nnoremap('<leader>gC', ':Telescope git_commits<CR>')
 nnoremap('<leader>gs', ':Telescope git_status<CR>')
 
-nnoremap('<leader>lr', ':Telescope lsp_references<CR>')
-nnoremap('<leader>li', ':Telescope lsp_implementations<CR>')
-nnoremap('<leader>ld', ':Telescope lsp_definitions<CR>')
-nnoremap('<leader>ls', ':Telescope lsp_document_symbols<CR>')
-nnoremap('<leader>lS', ':Telescope lsp_workspace_symbols<CR>')
-nnoremap('<leader>la', ':Telescope lsp_code_actions<CR>')
+
+nnoremap('<leader>la', '<cmd>lua require("lspsaga.codeaction").code_action()<CR>')
+vnoremap('<leader>la', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>')
+nnoremap('<leader>ld', '<cmd>lua require("lspsaga.provider").preview_definition()<CR>')
+nnoremap('<leader>lD', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
+nnoremap('<leader>le', '<cmd>lua require("lspsaga.diagnostic").show_cursor_diagnostics()<CR>')
+nnoremap('<leader>lE', '<cmd>lua require("lspsaga.diagnostic").show_line_diagnostics()<CR>')
+nnoremap('<leader>lf', '<cmd>lua require("lspsaga.provider").lsp_finder()<CR>') 
+nnoremap('<leader>lh', '<cmd>lua require("lspsaga.hover").render_hover_doc()<CR>')
+nnoremap('<leader>li', '<cmd>lua vim.lsp.buf.implementation()<CR>')
+nnoremap('<leader>lr', '<cmd>lua require("lspsaga.rename").rename()<CR>')
+nnoremap('<leader>ls', '<cmd>lua require("telescope.builtin").lsp_document_symbols{}<CR>')
+nnoremap('<leader>lS', '<cmd>lua require("telescope.builtin").lsp_workspace_symbols{}<CR>')
+
+inoremap('<C-;>',      '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>')
+
+nnoremap('<C-j>',      '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>')
+nnoremap('<C-k>',      '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>')
+
 
 nnoremap('<leader>hf', ':Telescope help_tags<CR>')
 nnoremap('<leader><leader>', ':Telescope commands<CR>')
@@ -311,6 +365,11 @@ nnoremap('<leader>ts', ':UltestSummary<CR>')
 nnoremap('<leader>to', ':UltestOutput<CR>')
 nnoremap('<leader>tc', ':UltestClear<CR>')
 nnoremap('<leader>tS', ':UltestStop<CR>')
+
+nnoremap(']t', '<Plug>(ultest-next-fail)')
+nnoremap('[t', '<Plug>(ultest-prev-fail)')
+nnoremap(']e', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_next()<CR>')
+nnoremap('[e', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_prev()<CR>')
 
 opt.foldmethod = "manual"
 
