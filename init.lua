@@ -64,10 +64,16 @@ require('packer').startup(function()
   use 'AndrewRadev/splitjoin.vim'                          -- Switch between one-line and multi-line version of code objects
   use 'alvan/vim-closetag'                                 -- Auto close HTML tags
   use 'b3nj5m1n/kommentary'                                -- Neovim plugin to comment text in and out, written in lua. Supports commenting out the current line, a visual selection and a motion.
-  use 'vim-test/vim-test'                                  -- A Vim wrapper for running tests on different granularities.
   use 'matze/vim-move'                                     -- Move text objects up/down indent/dedent using keyboard shorcuts
   use 'farmergreg/vim-lastplace'                           -- Return to the same location in a file when reopening/revisiting it
   use 'vim-scripts/BufOnly.vim'                            -- Provides BufOnly command to close all other buffers
+
+  use 'vim-test/vim-test'                                  -- A Vim wrapper for running tests on different granularities.
+  use {                                                    -- The ultimate testing plugin for NeoVim
+    'rcarriga/vim-ultest',
+    requires = {"vim-test/vim-test"},
+    run = ":UpdateRemotePlugins" 
+  }
 
   use 'kana/vim-textobj-user'                              -- Define custom text objects and provides a set of text objects to use
   use 'amiralies/vim-textobj-elixir'                       -- Provide custom textobjs for Elixir specific syntax
@@ -91,9 +97,9 @@ require('packer').startup(function()
         defaults = {
           sorting_strategy = "ascending",
           layout_strategy = "horizontal",
-          file_sorter =  require'telescope.sorters'.get_fuzzy_file,
+          file_sorter =  require('telescope.sorters').get_fzy_sorter,
           file_ignore_patterns = {},
-          generic_sorter =  require'telescope.sorters'.get_generic_fuzzy_sorter,
+          generic_sorter =  require('telescope.sorters').get_fzy_sorter,
           color_devicons = true,
           use_less = true,
           mappings = {
@@ -107,9 +113,20 @@ require('packer').startup(function()
             previewer = false,
             theme = "dropdown"
           },
+          oldfiles = {
+            previewer = false,
+            theme = "dropdown",
+            include_current_session = true,
+            cwd_only = true,
+            file_ignore_patterns = {'.git/', 'tmp/'},
+            prompt_title = 'Recently opened files'
+          },
           buffers = {
             previewer = false,
-            theme = "dropdown"
+            theme = "dropdown",
+            ignore_current_buffer = true,
+            only_cwd = true,
+            sort_lastused = true
           },
           git_branches = {
             layout_strategy = "horizontal",
@@ -231,6 +248,11 @@ g.nvim_tree_gitignore = 1
 g.nvim_tree_auto_open = 1
 g.nvim_tree_auto_close = 1
 
+g.ultest_use_pty = 1
+g.ultest_virtual_text = 1
+g.ultest_max_threads = 4
+g.ultest_output_on_line = 0
+
 vim.cmd [[colorscheme dracula]]
 
 local function map(mode, lhs, rhs, opts)
@@ -243,6 +265,7 @@ map('i', 'jk', '<Esc>')                                 -- Map escape to "jk"
 
 nnoremap('<Leader>fl', ':NvimTreeToggle<CR>')
 nnoremap('<Leader>ff', ":Telescope git_files<CR>")
+nnoremap('<Leader>fF', ":Telescope oldfiles<CR>")
 nnoremap('<Leader>fs', ":w<CR>")
 
 nnoremap('<leader>bn', ':BufferLineCycleNext<CR>')
@@ -271,7 +294,6 @@ nnoremap('<leader>ls', ':Telescope lsp_document_symbols<CR>')
 nnoremap('<leader>lS', ':Telescope lsp_workspace_symbols<CR>')
 nnoremap('<leader>la', ':Telescope lsp_code_actions<CR>')
 
-
 nnoremap('<leader>hf', ':Telescope help_tags<CR>')
 nnoremap('<leader><leader>', ':Telescope commands<CR>')
 nnoremap('<leader>mf', ':Telescope man_pages<CR>')
@@ -282,6 +304,13 @@ nnoremap('<leader>QQ', ':qall!<CR>')
 nnoremap('<leader>s/', ":Telescope live_grep<CR>")
 nnoremap('<leader>sb', ":Telescope current_buffer_fuzzy_find<CR>")
 nnoremap('<leader>sc', ':nohlsearch<CR>')
+
+nnoremap('<leader>tf', ':Ultest<CR>')
+nnoremap('<leader>tn', ':UltestNearest<CR>')
+nnoremap('<leader>ts', ':UltestSummary<CR>')
+nnoremap('<leader>to', ':UltestOutput<CR>')
+nnoremap('<leader>tc', ':UltestClear<CR>')
+nnoremap('<leader>tS', ':UltestStop<CR>')
 
 opt.foldmethod = "manual"
 
