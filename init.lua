@@ -92,7 +92,7 @@ require('packer').startup(function()
         autocomplete = true,
         debug = false,
         min_length = 1,
-        preselect = "disabeld",
+        preselect = "enabled",
         throttle_time = 80,
         source_timeout = 200,
         incomplete_delay = 400,
@@ -274,6 +274,17 @@ require('packer').startup(function()
       }
     end
   }
+
+  use {
+    "folke/which-key.nvim",
+    config = function()
+      require("which-key").setup {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      }
+    end
+  }
 end)
 
 g.mapleader = ";"
@@ -303,7 +314,7 @@ map('i', 'jk', '<Esc>')                                 -- Map escape to "jk"
 
 nnoremap('<Leader>fl', ':NvimTreeToggle<CR>')
 nnoremap('<Leader>ff', ":Telescope git_files<CR>")
-nnoremap('<Leader>fF', ":Telescope oldfiles<CR>")
+nnoremap('<Leader>fr', ":Telescope oldfiles<CR>")
 nnoremap('<Leader>fs', ":w<CR>")
 
 nnoremap(']b', ':BufferLineCycleNext<CR>')
@@ -312,7 +323,6 @@ nnoremap('<leader>bp', ':BufferLineCyclePrev<CR>')
 nnoremap('<leader>bd', ':bd<CR>')
 nnoremap('<leader>bc', ':BufOnly<CR>')
 nnoremap('<leader>bl', ':Telescope buffers<CR>')
-nnoremap('<leader>bf', '<CMD>lua vim.lsp.buf.formatting()<CR>')
 
 nnoremap('<leader>wv', ':vsplit<CR>')
 nnoremap('<leader>ws', ':split<CR>')
@@ -328,10 +338,10 @@ nnoremap('<leader>gc', ':Telescope git_bcommits<CR>')
 nnoremap('<leader>gC', ':Telescope git_commits<CR>')
 nnoremap('<leader>gs', ':Telescope git_status<CR>')
 
-
 nnoremap('<leader>la', '<cmd>lua require("lspsaga.codeaction").code_action()<CR>')
 vnoremap('<leader>la', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>')
 nnoremap('<leader>ld', '<cmd>lua require("lspsaga.provider").preview_definition()<CR>')
+nnoremap('<leader>lg', '<cmd>lua vim.lsp.buf.definition()<CR>')
 nnoremap('<leader>lD', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
 nnoremap('<leader>le', '<cmd>lua require("lspsaga.diagnostic").show_cursor_diagnostics()<CR>')
 nnoremap('<leader>lE', '<cmd>lua require("lspsaga.diagnostic").show_line_diagnostics()<CR>')
@@ -342,7 +352,7 @@ nnoremap('<leader>lr', '<cmd>lua require("lspsaga.rename").rename()<CR>')
 nnoremap('<leader>ls', '<cmd>lua require("telescope.builtin").lsp_document_symbols{}<CR>')
 nnoremap('<leader>lS', '<cmd>lua require("telescope.builtin").lsp_workspace_symbols{}<CR>')
 
-inoremap('<C-;>',      '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>')
+inoremap('<C-i>',      '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>')
 
 nnoremap('<C-j>',      '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>')
 nnoremap('<C-k>',      '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>')
@@ -374,36 +384,6 @@ nnoremap('[e', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_prev(
 opt.foldmethod = "manual"
 
 -- Replace the following with the path to your installation
-local LSP = require("motch.lsp")
+require("motch.lsp")
 
-local path_to_elixirls = vim.fn.expand("~/.local/share/elixir-ls/rel/language_server.sh")
-
-LSP.setup(
-  "elixirls",
-  {
-    settings = {
-      elixirLS = {
-        dialyzerEnabled = false,
-        fetchDeps = false
-      }
-    },
-    cmd = {path_to_elixirls}
-  }
-)
-LSP.setup(
-  "efm",
-  {
-    filetypes = {
-      "elixir",
-      "javascript",
-      "lua",
-      "bash",
-      "zsh",
-      "sh"
-    }
-  }
-)
-LSP.setup("solargraph", {})
-LSP.setup("tsserver", {})
-LSP.setup("vimls", {})
 
