@@ -7,6 +7,9 @@ local nnoremap = require("motch.utils").nnoremap
 local inoremap = require("motch.utils").inoremap
 local vnoremap = require("motch.utils").vnoremap
 
+g.python_host_prog = '/usr/bin/python'
+g.python3_host_prog = '/usr/bin/python3'
+
 opt.autoread = true
 opt.background = "dark"
 opt.backupdir = vim.fn.expand("~/.cache/nvim/bkup")
