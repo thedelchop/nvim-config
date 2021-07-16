@@ -80,7 +80,6 @@ local stylua = { formatCommand = 'stylua -s -', formatStdin = true }
 local format_config = {
     javascript = { eslint },
     javascriptreact = { eslint },
-    json = { eslint },
     lua = { stylua },
     typescript = { eslint },
     typescriptreact = { eslint }
@@ -93,10 +92,8 @@ setup(
       "elixir",
       "javascript",
       "javascriptreact",
-      "json",
       "typescript",
-      "typescriptreact",
-      "lua"
+      "typescriptreact"
     },
     settings = {
       languages = format_config
@@ -104,7 +101,10 @@ setup(
   }
 )
 
-setup("tsserver", {
+lspconfig.tsserver.setup({
+  log_level = vim.lsp.protocol.MessageType.Log,
+  message_level = vim.lsp.protocol.MessageType.Log,
+  capabilities = capabilities,
   on_attach = function(client)
     client.resolved_capabilities.document_formatting = false
     on_attach(client)
