@@ -305,6 +305,9 @@ g.ultest_virtual_text = 1
 g.ultest_max_threads = 4
 g.ultest_output_on_line = 0
 
+vim.cmd [[ let g:test#javascript#lab#options = "--verbose --leaks --transform ./node_modules/lab-transform-typescript"]]
+vim.cmd [[ let g:test#javascript#lab#file_pattern = '\vtest/.*\.ts$' ]]
+
 vim.cmd [[colorscheme dracula]]
 
 local function map(mode, lhs, rhs, opts)
