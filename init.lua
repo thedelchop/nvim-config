@@ -201,14 +201,38 @@ require('packer').startup(function()
 
   use {'rrethy/vim-hexokinase', run = 'make hexokinase' }  -- Render color vaules in the sidebar
 
-  use 'APZelos/blamer.nvim'                                -- Provide blame info in virtual text like VSCode
   use 'junegunn/gv.vim'                                    -- A git commit browser.
   use {'lewis6991/gitsigns.nvim',
     requires = {             -- Super fast git decorations implemented purely in lua/teal.
       'nvim-lua/plenary.nvim'
     },
     config = function()
-      require('gitsigns').setup()
+      require('gitsigns').setup({
+        attach_to_untracked = false,
+        current_line_blame = true,
+        current_line_blame_position = 'eol',
+        keymaps = {
+          noremap = true,
+
+          ['n ]h'] = { expr = true, "&diff ? ']c' : '<cmd>lua require\"gitsigns\".next_hunk()<CR>'"},
+          ['n [h'] = { expr = true, "&diff ? '[c' : '<cmd>lua require\"gitsigns\".prev_hunk()<CR>'"},
+
+          ['n <leader>gp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
+          ['n <leader>gr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
+          ['n <leader>gR'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
+          ['n <leader>gs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
+          ['n <leader>gS'] = '<cmd>lua require"gitsigns".stage_buffer()<CR>',
+          ['n <leader>gu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
+          ['n <leader>gU'] = '<cmd>lua require"gitsigns".reset_buffer_index()<CR>',
+
+          ['v <leader>gr'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
+          ['v <leader>gs'] = '<cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
+
+          ['o ih'] = ':<C-U>lua require"gitsigns".select_hunk()<CR>',
+          ['x ih'] = ':<C-U>lua require"gitsigns".select_hunk()<CR>'
+        },
+        word_diff = true
+      })
     end          
   }                            
 
@@ -308,6 +332,15 @@ require('packer').startup(function()
             C = { "List all commits for searching" },
             s = { "Show interactive Git status" }
           },
+          g = {
+            p = { "Preview hunk" },
+            r = { "Reset hunk" },
+            R = { "Reset buffer" },
+            s = { "Stage hunk" },
+            S = { "Stage buffer" },
+            u = { "Unstage hunk" },
+            U = { "Unstage buffer" },
+          },
           l = {
             a = { "Show available code actions" },
             d = { "Show definition preview" },
@@ -357,13 +390,15 @@ require('packer').startup(function()
         },
         ["]"] = {
           b = { "Next buffer" },
-          e = { "Next diagnostic message" },
+          h = { "Next hunk" },
+          e = { "Next diagnostic" },
           t = { "Next test failure" }
         },
         ["["] = {
-          b = { "Prev buffer" },
-          e = { "Prev diagnostic message" },
-          t = { "Prev test failure" }
+          b = { "Previous buffer" },
+          h = { "Previous hunk" },
+          e = { "Previous diagnostic" },
+          t = { "Previous test failure" }
         }
       })
     end
@@ -417,7 +452,6 @@ nnoremap('<leader>w=', '<C-W>=')
 nnoremap('<leader>gb', ':Telescope git_branches<CR>')
 nnoremap('<leader>gc', ':Telescope git_bcommits<CR>')
 nnoremap('<leader>gC', ':Telescope git_commits<CR>')
-nnoremap('<leader>gs', ':Telescope git_status<CR>')
 
 nnoremap('<leader>la', '<cmd>lua require("lspsaga.codeaction").code_action()<CR>')
 vnoremap('<leader>la', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>')
