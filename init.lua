@@ -281,11 +281,91 @@ require('packer').startup(function()
   use {
     "folke/which-key.nvim",
     config = function()
-      require("which-key").setup {
-        -- your configuration comes here
-        -- or leave it empty to use the default settings
-        -- refer to the configuration section below
-      }
+      local which_key = require("which-key")
+
+      which_key.setup()
+
+      which_key.register({
+        ["<leader>"] = {
+          b = {
+            name = "Buffers",
+            l = { "List open buffers for search" },
+            c = { "Close all other buffers" },
+            d = { "Close buffer" },
+            s = { "Save file" }
+          },
+          f = {
+            name = "Files",
+            f = { "Find files" },
+            r = { "Recent files" },
+            l = { "List files" },
+            s = { "Save file" }
+          },
+          f = {
+            name = "Git",
+            b = { "List branches for searching" },
+            c = { "List commits for current buffer for searching" },
+            C = { "List all commits for searching" },
+            s = { "Show interactive Git status" }
+          },
+          l = {
+            a = { "Show available code actions" },
+            d = { "Show definition preview" },
+            D = { "Show type definition" },
+            e = { "Show diagnostics for cursor" },
+            E = { "Show diagnostics for line" },
+            f = { "Search LSP document symbols" },
+            ["gd"] = { "Go to definition of symbol" },
+            h = { "Show hover documentation" },
+            i = { "Go to implementation" },
+            r = { "Rename symbol under cursor" },
+            s = { "Search document symbols" },
+            S = { "Search workspace symbols" },
+          },
+          q = {
+            q = { "Quit vim" },
+            Q = { "Quit vim without save" }
+          },
+          s = {
+            ["/"] = { "Fuzzy search current workspace" },
+            ["<leader>"] = { "Fuzzy search Vim commands" },
+            b = { "Fuzzy search current buffer" },
+            c = { "Remove search results highlighting" },
+            h = { "Fuzzy search help tags" },
+            H = { "Highlight search results" },
+            m = { "Fuzzy search man pages" },
+            r = { "Fuzzy search registers" }
+          },
+          t = {
+            name = "Tests",
+            n = { "Run nearest test" },
+            f = { "Run all tests for file" },
+            o = { "Show output for current test" },
+            c = { "Clear all test runs" },
+            S = { "Stop executing current test command" },
+            s = { "Show test summary" }
+          },
+          w = {
+            name = "Windows",
+            v = { "Open vertical window split" },
+            s = { "Open horizontal window split" },
+            d = { "Close current window" },
+            D = { "Force close of current window" },
+            c = { "Close all other windows" },
+            ["="] = { "Equalize window sizes" }
+          },
+        },
+        ["]"] = {
+          b = { "Next buffer" },
+          e = { "Next diagnostic message" },
+          t = { "Next test failure" }
+        },
+        ["["] = {
+          b = { "Prev buffer" },
+          e = { "Prev diagnostic message" },
+          t = { "Prev test failure" }
+        }
+      })
     end
   }
 end)
@@ -323,7 +403,6 @@ nnoremap('<Leader>ff', ":Telescope git_files<CR>")
 nnoremap('<Leader>fr', ":Telescope oldfiles<CR>")
 nnoremap('<Leader>fs', ":w<CR>")
 
-nnoremap('<leader>bp', ':BufferLineCyclePrev<CR>')
 nnoremap('<leader>bd', ':bd<CR>')
 nnoremap('<leader>bc', ':BufOnly<CR>')
 nnoremap('<leader>bl', ':Telescope buffers<CR>')
@@ -335,8 +414,6 @@ nnoremap('<leader>wD', ':q!<CR>')
 nnoremap('<leader>wc', ':only<CR>')
 nnoremap('<leader>w=', '<C-W>=')
 
-nnoremap('<leader>rf', ':Telescope registers<CR>')
-
 nnoremap('<leader>gb', ':Telescope git_branches<CR>')
 nnoremap('<leader>gc', ':Telescope git_bcommits<CR>')
 nnoremap('<leader>gC', ':Telescope git_commits<CR>')
@@ -345,7 +422,7 @@ nnoremap('<leader>gs', ':Telescope git_status<CR>')
 nnoremap('<leader>la', '<cmd>lua require("lspsaga.codeaction").code_action()<CR>')
 vnoremap('<leader>la', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>')
 nnoremap('<leader>ld', '<cmd>lua require("lspsaga.provider").preview_definition()<CR>')
-nnoremap('<leader>lg', '<cmd>lua vim.lsp.buf.definition()<CR>')
+nnoremap('<leader>lgd', '<cmd>lua vim.lsp.buf.definition()<CR>')
 nnoremap('<leader>lD', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
 nnoremap('<leader>le', '<cmd>lua require("lspsaga.diagnostic").show_cursor_diagnostics()<CR>')
 nnoremap('<leader>lE', '<cmd>lua require("lspsaga.diagnostic").show_line_diagnostics()<CR>')
@@ -367,16 +444,17 @@ inoremap('<C-e>', 'compe#close("<C-e>")', {expr = true})
 inoremap('<C-f>', 'compe#scroll({ "delta": +4 }', {expr = true})
 inoremap('<C-d>', 'compe#scroll({ "delta": -4 }', {expr = true})
 
-nnoremap('<leader>hf', ':Telescope help_tags<CR>')
-nnoremap('<leader><leader>', ':Telescope commands<CR>')
-nnoremap('<leader>mf', ':Telescope man_pages<CR>')
-
 nnoremap('<leader>qq', ':qa<CR>')
 nnoremap('<leader>QQ', ':qall!<CR>')
 
 nnoremap('<leader>s/', ":Telescope live_grep<CR>")
 nnoremap('<leader>sb', ":Telescope current_buffer_fuzzy_find<CR>")
 nnoremap('<leader>sc', ':nohlsearch<CR>')
+nnoremap('<leader>sH', ':set hlsearch<CR>')
+nnoremap('<leader>sh', ':Telescope help_tags<CR>')
+nnoremap('<leader>sm', ':Telescope man_pages<CR>')
+nnoremap('<leader>s<leader>', ':Telescope commands<CR>')
+nnoremap('<leader>sr', ':Telescope registers<CR>')
 
 nnoremap('<leader>tf', ':Ultest<CR>')
 nnoremap('<leader>tn', ':UltestNearest<CR>')
@@ -386,10 +464,10 @@ nnoremap('<leader>tc', ':UltestClear<CR>')
 nnoremap('<leader>tS', ':UltestStop<CR>')
 
 nnoremap(']b', ':BufferLineCycleNext<CR>')
-nnoremap('[b', ':BufferLineCycleNext<CR>')
 nnoremap(']e', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_next()<CR>')
-nnoremap('[e', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_prev()<CR>')
 nnoremap(']t', '<Plug>(ultest-next-fail)')
+nnoremap('[b', ':BufferLineCycleNext<CR>')
+nnoremap('[e', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_prev()<CR>')
 nnoremap('[t', '<Plug>(ultest-prev-fail)')
 
 local showRecentFilesFinder = vim.api.nvim_eval("@%") == "" or  vim.api.nvim_eval("filereadable(@%)") == 0
