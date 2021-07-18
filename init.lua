@@ -453,8 +453,12 @@ vim.cmd [[colorscheme dracula]]
 local nnoremap = require("motch.utils").nnoremap
 local inoremap = require("motch.utils").inoremap
 local vnoremap = require("motch.utils").vnoremap
+local xnoremap = require("motch.utils").xnoremap
 
 inoremap('jk', '<Esc>')                                 -- Map escape to "jk"
+
+xnoremap('>', '>gv')
+xnoremap('<', '<gv')
 
 nnoremap('<Leader>ff', ":Telescope git_files<CR>")
 nnoremap('<Leader>fl', ':NvimTreeToggle<CR>')
