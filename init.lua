@@ -7,8 +7,8 @@ local nnoremap = require("motch.utils").nnoremap
 local inoremap = require("motch.utils").inoremap
 local vnoremap = require("motch.utils").vnoremap
 
-g.python_host_prog = '/usr/bin/python'
-g.python3_host_prog = '/usr/bin/python3'
+g.python_host_prog = os.getenv("PYTHON2_PATH")
+g.python3_host_prog = os.getenv("PYTHON_PATH")
 
 opt.autoread = true
 opt.background = "dark"
@@ -297,7 +297,7 @@ g.nvim_tree_side = 'right'
 g.nvim_tree_width = 40 
 g.nvim_tree_ignore = { '.git', 'node_modules', '.cache' }
 g.nvim_tree_gitignore = 1
-g.nvim_tree_auto_open = 1
+g.nvim_tree_auto_open = 0
 g.nvim_tree_auto_close = 1
 
 g.ultest_use_pty = 1
@@ -323,8 +323,6 @@ nnoremap('<Leader>ff', ":Telescope git_files<CR>")
 nnoremap('<Leader>fr', ":Telescope oldfiles<CR>")
 nnoremap('<Leader>fs', ":w<CR>")
 
-nnoremap(']b', ':BufferLineCycleNext<CR>')
-nnoremap('[b', ':BufferLineCycleNext<CR>')
 nnoremap('<leader>bp', ':BufferLineCyclePrev<CR>')
 nnoremap('<leader>bd', ':bd<CR>')
 nnoremap('<leader>bc', ':BufOnly<CR>')
@@ -358,11 +356,16 @@ nnoremap('<leader>lr', '<cmd>lua require("lspsaga.rename").rename()<CR>')
 nnoremap('<leader>ls', '<cmd>lua require("telescope.builtin").lsp_document_symbols{}<CR>')
 nnoremap('<leader>lS', '<cmd>lua require("telescope.builtin").lsp_workspace_symbols{}<CR>')
 
-inoremap('<C-i>',      '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>')
+inoremap('<C-i>', '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>')
 
-nnoremap('<C-j>',      '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>')
-nnoremap('<C-k>',      '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>')
+nnoremap('<C-j>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>')
+nnoremap('<C-k>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>')
 
+inoremap('<C-Space>', 'compe#complete()', {expr = true})
+inoremap('<CR>', 'compe#confirm("<CR>")', {expr = true})
+inoremap('<C-e>', 'compe#close("<C-e>")', {expr = true})
+inoremap('<C-f>', 'compe#scroll({ "delta": +4 }', {expr = true})
+inoremap('<C-d>', 'compe#scroll({ "delta": -4 }', {expr = true})
 
 nnoremap('<leader>hf', ':Telescope help_tags<CR>')
 nnoremap('<leader><leader>', ':Telescope commands<CR>')
@@ -382,12 +385,20 @@ nnoremap('<leader>to', ':UltestOutput<CR>')
 nnoremap('<leader>tc', ':UltestClear<CR>')
 nnoremap('<leader>tS', ':UltestStop<CR>')
 
-nnoremap(']t', '<Plug>(ultest-next-fail)')
-nnoremap('[t', '<Plug>(ultest-prev-fail)')
+nnoremap(']b', ':BufferLineCycleNext<CR>')
+nnoremap('[b', ':BufferLineCycleNext<CR>')
 nnoremap(']e', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_next()<CR>')
 nnoremap('[e', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_prev()<CR>')
+nnoremap(']t', '<Plug>(ultest-next-fail)')
+nnoremap('[t', '<Plug>(ultest-prev-fail)')
 
-opt.foldmethod = "manual"
+local showRecentFilesFinder = vim.api.nvim_eval("@%") == "" or  vim.api.nvim_eval("filereadable(@%)") == 0
+
+if showRecentFilesFinder then
+  vim.cmd("command! ShowRecentFiles lua require('telescope.builtin').oldfiles({})")
+
+  vim.api.nvim_exec("autocmd VimEnter * ShowRecentFiles", false)
+end
 
 -- Replace the following with the path to your installation
 require("motch.lsp")

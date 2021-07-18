@@ -21,13 +21,14 @@ local on_attach = function(client, bufnr)
   vim.cmd [[inoremap <silent><expr> <C-f> compe#scroll({ 'delta': +4 })]]
   vim.cmd [[inoremap <silent><expr> <C-d> compe#scroll({ 'delta': -4 })]]
 
-  vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting()")
+  vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting_sync(nil, 1000)")
+
 
  	if client.resolved_capabilities.document_formatting then
     vim.api.nvim_exec([[
       augroup LspAutocommands
           autocmd! * <buffer>
-          autocmd BufWritePost <buffer> LspFormatting
+          autocmd BufWritePre <buffer> LspFormatting
       augroup END
       ]], true)
   end
@@ -66,40 +67,41 @@ setup(
   }
 )
 
-local eslint = {
-    lintCommand = 'eslint_d -f unix --stdin --stdin-filename ${INPUT}',
-    lintIgnoreExitCode = true,
-    lintStdin = true,
-    lintFormats = { '%f:%l:%c: %m' },
-    formatCommand = 'eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}',
-    formatStdin = true,
+local filetypes = {
+    typescript = "eslint",
+    typescriptreact = "eslint",
+    javascript = "eslint",
+    javascriptreact = "eslint",
 }
 
-local stylua = { formatCommand = 'stylua -s -', formatStdin = true }
-
-local format_config = {
-    javascript = { eslint },
-    javascriptreact = { eslint },
-    lua = { stylua },
-    typescript = { eslint },
-    typescriptreact = { eslint }
-}
-
-setup(
-  "efm",
-  {
-    filetypes = {
-      "elixir",
-      "javascript",
-      "javascriptreact",
-      "typescript",
-      "typescriptreact"
-    },
-    settings = {
-      languages = format_config
+local linters = {
+    eslint = {
+        sourceName = "eslint",
+        command = "eslint_d",
+        rootPatterns = {".eslintrc.js", "package.json"},
+        debounce = 100,
+        args = {"--stdin", "--stdin-filename", "%filepath", "--format", "json"},
+        parseJson = {
+            errorsRoot = "[0].messages",
+            line = "line",
+            column = "column",
+            endLine = "endLine",
+            endColumn = "endColumn",
+            message = "${message} [${ruleId}]",
+            security = "severity"
+        },
+        securities = {[2] = "error", [1] = "warning"}
     }
-  }
-)
+}
+
+lspconfig.diagnosticls.setup({
+    on_attach = on_attach,
+    filetypes = vim.tbl_keys(filetypes),
+    init_options = {
+        filetypes = filetypes,
+        linters = linters,
+    }
+})
 
 lspconfig.tsserver.setup({
   log_level = vim.lsp.protocol.MessageType.Log,
@@ -109,6 +111,20 @@ lspconfig.tsserver.setup({
     client.resolved_capabilities.document_formatting = false
     on_attach(client)
   end
+})
+
+lspconfig.efm.setup({
+  filetypes = {
+    "elixir",
+  },
+  log_level = vim.lsp.protocol.MessageType.Log,
+  message_level = vim.lsp.protocol.MessageType.Log,
+  capabilities = capabilities,
+  on_attach = function(client)
+    client.resolved_capabilities.document_formatting = false
+    on_attach(client)
+  end
+
 })
 
 setup("solargraph", {})
