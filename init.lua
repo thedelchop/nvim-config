@@ -3,10 +3,6 @@ local g = vim.g                                         -- a table to access glo
 local opt = vim.opt                                     -- to set options
 local cmd = vim.cmd
 
-local nnoremap = require("motch.utils").nnoremap
-local inoremap = require("motch.utils").inoremap
-local vnoremap = require("motch.utils").vnoremap
-
 g.python_host_prog = os.getenv("PYTHON2_PATH")
 g.python3_host_prog = os.getenv("PYTHON_PATH")
 
@@ -72,7 +68,7 @@ require('packer').startup(function()
   use 'b3nj5m1n/kommentary'                                -- Neovim plugin to comment text in and out, written in lua. Supports commenting out the current line, a visual selection and a motion.
   use 'matze/vim-move'                                     -- Move text objects up/down indent/dedent using keyboard shorcuts
   use 'farmergreg/vim-lastplace'                           -- Return to the same location in a file when reopening/revisiting it
-  use 'vim-scripts/BufOnly.vim'                            -- Provides BufOnly command to close all other buffers
+  use 'thedelchop/vim-bufonly'                             -- Provides BufOnly command to close all other buffers
 
   use 'vim-test/vim-test'                                  -- A Vim wrapper for running tests on different granularities.
   use {                                                    -- The ultimate testing plugin for NeoVim
@@ -128,6 +124,8 @@ require('packer').startup(function()
   use 'hrsh7th/vim-vsnip-integ'                            -- Integrations with man of the common LSP/completion libs
   use 'rafamadriz/friendly-snippets'                       -- Snippets collection for a set of different programming languages for faster development.
 
+  use 'famiu/bufdelete.nvim'
+
   use {                                                    -- provides FZF like searching inside projects
     'nvim-telescope/telescope.nvim',
     requires = {
@@ -147,10 +145,16 @@ require('packer').startup(function()
           mappings = {
             i = {
               ["jk"] = require('telescope.actions').close
+            },
+            n = {
+              ["jk"] = require('telescope.actions').close
             }
           }
         },
         pickers = {
+          autocommands = {
+            previewer = false
+          },
           git_files = {
             previewer = false,
             theme = "dropdown"
@@ -168,11 +172,23 @@ require('packer').startup(function()
             theme = "dropdown",
             ignore_current_buffer = true,
             only_cwd = true,
-            sort_lastused = true
+            sort_lastused = true,
+            mappings = {
+              i = {
+                ["<c-d>"] = require("telescope.actions").delete_buffer,
+              },
+              n = {
+                ["<c-d>"] = require("telescope.actions").delete_buffer,
+              }
+            }
           },
           git_branches = {
             layout_strategy = "horizontal",
-            sort_lastused = true
+            sort_lastused = true,
+            mappings = {
+              i = {
+              }
+            }
 
           },
           git_bcommits = {
@@ -230,8 +246,7 @@ require('packer').startup(function()
 
           ['o ih'] = ':<C-U>lua require"gitsigns".select_hunk()<CR>',
           ['x ih'] = ':<C-U>lua require"gitsigns".select_hunk()<CR>'
-        },
-        word_diff = true
+        }
       })
     end          
   }                            
@@ -385,8 +400,13 @@ require('packer').startup(function()
             d = { "Close current window" },
             D = { "Force close of current window" },
             c = { "Close all other windows" },
-            ["="] = { "Equalize window sizes" }
+            ["="] = { "Equalize window sizes" },
           },
+          x = {
+            name = "Text",
+            j = { "Join text object" },
+            s = { "Split text object" }
+          }
         },
         ["]"] = {
           b = { "Next buffer" },
@@ -398,7 +418,7 @@ require('packer').startup(function()
           b = { "Previous buffer" },
           h = { "Previous hunk" },
           e = { "Previous diagnostic" },
-          t = { "Previous test failure" }
+          t = { "Previous test failure" },
         }
       })
     end
@@ -420,41 +440,52 @@ g.ultest_virtual_text = 1
 g.ultest_max_threads = 4
 g.ultest_output_on_line = 0
 
+g.splitjoin_split_mapping = ''
+g.splitjoin_join_mapping = ''
+
+g.bufonly_delete_cmd = 'Bwipeout'
+
 vim.cmd [[ let g:test#javascript#lab#options = "--verbose --leaks --transform ./node_modules/lab-transform-typescript"]]
 vim.cmd [[ let g:test#javascript#lab#file_pattern = '\vtest/.*\.ts$' ]]
 
 vim.cmd [[colorscheme dracula]]
 
-local function map(mode, lhs, rhs, opts)
-  local options = {noremap = true}
-  if opts then options = vim.tbl_extend('force', options, opts) end
-  vim.api.nvim_set_keymap(mode, lhs, rhs, options)
-end
+local nnoremap = require("motch.utils").nnoremap
+local inoremap = require("motch.utils").inoremap
+local vnoremap = require("motch.utils").vnoremap
 
-map('i', 'jk', '<Esc>')                                 -- Map escape to "jk"
+inoremap('jk', '<Esc>')                                 -- Map escape to "jk"
 
-nnoremap('<Leader>fl', ':NvimTreeToggle<CR>')
 nnoremap('<Leader>ff', ":Telescope git_files<CR>")
+nnoremap('<Leader>fl', ':NvimTreeToggle<CR>')
 nnoremap('<Leader>fr', ":Telescope oldfiles<CR>")
 nnoremap('<Leader>fs', ":w<CR>")
 
-nnoremap('<leader>bd', ':bd<CR>')
 nnoremap('<leader>bc', ':BufOnly<CR>')
+nnoremap('<leader>bd', ':Bdelete<CR>')
 nnoremap('<leader>bl', ':Telescope buffers<CR>')
 
-nnoremap('<leader>wv', ':vsplit<CR>')
-nnoremap('<leader>ws', ':split<CR>')
+nnoremap('<leader>w=', '<C-W>=')
+nnoremap('<leader>wc', ':only<CR>')
 nnoremap('<leader>wd', ':q<CR>')
 nnoremap('<leader>wD', ':q!<CR>')
-nnoremap('<leader>wc', ':only<CR>')
-nnoremap('<leader>w=', '<C-W>=')
+nnoremap('<leader>wm', ':only<CR>')
+nnoremap('<leader>ws', ':split<CR>')
+nnoremap('<leader>wv', ':vsplit<CR>')
 
 nnoremap('<leader>gb', ':Telescope git_branches<CR>')
 nnoremap('<leader>gc', ':Telescope git_bcommits<CR>')
 nnoremap('<leader>gC', ':Telescope git_commits<CR>')
 
+inoremap('<C-i>', '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>')
+
+inoremap('<C-Space>', 'compe#complete()', {expr = true})
+inoremap('<CR>', 'compe#confirm("<CR>")', {expr = true})
+inoremap('<C-d>', 'compe#scroll({ "delta": -4 }', {expr = true})
+inoremap('<C-e>', 'compe#close("<C-e>")', {expr = true})
+inoremap('<C-f>', 'compe#scroll({ "delta": +4 }', {expr = true})
+
 nnoremap('<leader>la', '<cmd>lua require("lspsaga.codeaction").code_action()<CR>')
-vnoremap('<leader>la', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>')
 nnoremap('<leader>ld', '<cmd>lua require("lspsaga.provider").preview_definition()<CR>')
 nnoremap('<leader>lgd', '<cmd>lua vim.lsp.buf.definition()<CR>')
 nnoremap('<leader>lD', '<cmd>lua vim.lsp.buf.type_definition()<CR>')
@@ -467,16 +498,10 @@ nnoremap('<leader>lr', '<cmd>lua require("lspsaga.rename").rename()<CR>')
 nnoremap('<leader>ls', '<cmd>lua require("telescope.builtin").lsp_document_symbols{}<CR>')
 nnoremap('<leader>lS', '<cmd>lua require("telescope.builtin").lsp_workspace_symbols{}<CR>')
 
-inoremap('<C-i>', '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>')
-
 nnoremap('<C-j>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>')
 nnoremap('<C-k>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>')
 
-inoremap('<C-Space>', 'compe#complete()', {expr = true})
-inoremap('<CR>', 'compe#confirm("<CR>")', {expr = true})
-inoremap('<C-e>', 'compe#close("<C-e>")', {expr = true})
-inoremap('<C-f>', 'compe#scroll({ "delta": +4 }', {expr = true})
-inoremap('<C-d>', 'compe#scroll({ "delta": -4 }', {expr = true})
+vnoremap('<leader>la', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>')
 
 nnoremap('<leader>qq', ':qa<CR>')
 nnoremap('<leader>QQ', ':qall!<CR>')
@@ -490,12 +515,15 @@ nnoremap('<leader>sm', ':Telescope man_pages<CR>')
 nnoremap('<leader>s<leader>', ':Telescope commands<CR>')
 nnoremap('<leader>sr', ':Telescope registers<CR>')
 
+nnoremap('<leader>tc', ':UltestClear<CR>')
 nnoremap('<leader>tf', ':Ultest<CR>')
 nnoremap('<leader>tn', ':UltestNearest<CR>')
-nnoremap('<leader>ts', ':UltestSummary<CR>')
 nnoremap('<leader>to', ':UltestOutput<CR>')
-nnoremap('<leader>tc', ':UltestClear<CR>')
+nnoremap('<leader>ts', ':UltestSummary<CR>')
 nnoremap('<leader>tS', ':UltestStop<CR>')
+
+nnoremap('<leader>xj', ':SplitjoinJoin<CR>')
+nnoremap('<leader>xs', ':SplitjoinSplit<CR>')
 
 nnoremap(']b', ':BufferLineCycleNext<CR>')
 nnoremap(']e', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_next()<CR>')
@@ -514,5 +542,3 @@ end
 
 -- Replace the following with the path to your installation
 require("motch.lsp")
-
-
