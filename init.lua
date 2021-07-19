@@ -368,10 +368,10 @@ cmd [[ let g:test#javascript#lab#file_pattern = '\vtest/.*\.ts$' ]]
 
 cmd [[colorscheme dracula]]
 
-local nnoremap = require("motch.utils").nnoremap
-local inoremap = require("motch.utils").inoremap
-local vnoremap = require("motch.utils").vnoremap
-local xnoremap = require("motch.utils").xnoremap
+local nnoremap = require("thedelchop.utils").nnoremap
+local inoremap = require("thedelchop.utils").inoremap
+local vnoremap = require("thedelchop.utils").vnoremap
+local xnoremap = require("thedelchop.utils").xnoremap
 
 inoremap('jk', '<Esc>') -- Map escape to "jk"
 
@@ -463,4 +463,4 @@ if showRecentFilesFinder then
 end
 
 -- Replace the following with the path to your installation
-require("motch.lsp")
+require("thedelchop.lsp")
