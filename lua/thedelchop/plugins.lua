@@ -15,13 +15,12 @@ return require('packer').startup(function()
     use 'christoomey/vim-tmux-runner' -- A simple, vimscript only, command runner for sending commands from vim to tmux.
     use 'christoomey/vim-tmux-navigator' -- Navigate in and out of Vim and Tmux seamlessly
 
-    use 'tpope/vim-surround' -- The plugin provides mappings to easily delete, change and add such surroundings in pairs.
+    use 'blackCauldron7/surround.nvim' -- The plugin provides mappings to easily delete, change and add such surroundings in pairs.
     use 'tpope/vim-projectionist' -- Set of use utilities to define things like alternate files and jump locations for all projects
     use 'tpope/vim-rails' -- Vim plugin for editing Ruby on Rails applications.
     use 'tpope/vim-repeat' -- Repeat.vim remaps . in a way that plugins can tap into it.
 
     use 'AndrewRadev/splitjoin.vim' -- Switch between one-line and multi-line version of code objects
-    use 'alvan/vim-closetag' -- Auto close HTML tags
     use 'b3nj5m1n/kommentary' -- Neovim plugin to comment text in and out, written in lua. Supports commenting out the current line, a visual selection and a motion.
     use 'matze/vim-move' -- Move text objects up/down indent/dedent using keyboard shorcuts
     use 'farmergreg/vim-lastplace' -- Return to the same location in a file when reopening/revisiting it
@@ -34,6 +33,14 @@ return require('packer').startup(function()
         run = ":UpdateRemotePlugins"
     }
 
+    use {
+        'windwp/nvim-autopairs',
+        config = function()
+            require('nvim-autopairs').setup({})
+        end
+    }
+    use 'windwp/nvim-ts-autotag' -- Auto close HTML tags
+
     use 'kana/vim-textobj-user' -- Define custom text objects and provides a set of text objects to use
     use 'amiralies/vim-textobj-elixir' -- Provide custom textobjs for Elixir specific syntax
 
@@ -42,6 +49,7 @@ return require('packer').startup(function()
     use 'neovim/nvim-lspconfig' -- provides lsp servers for nvim lsp client
     use { -- provide autocompletion
         'hrsh7th/nvim-compe',
+        requires = 'windwp/nvim-autopairs',
         config = require("thedelchop.compe")
     }
     use 'hrsh7th/vim-vsnip' -- Allow vim to use LSP snippets
@@ -94,6 +102,7 @@ return require('packer').startup(function()
 
     use {
         'nvim-treesitter/nvim-treesitter', -- The goal of nvim-treesitter is both to provide a simple and easy way to use the interface for tree-sitter in Neovim
+        requires = 'windwp/nvim-ts-autotag',
         run = ':TSUpdate',
         config = require("thedelchop.treesitter")
     }

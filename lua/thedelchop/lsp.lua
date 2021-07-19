@@ -14,7 +14,7 @@ local on_attach = function(client, _)
     vim.cmd [[smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>']]
 
     vim.cmd [[inoremap <silent><expr> <C-Space> compe#complete()]]
-    vim.cmd [[inoremap <silent><expr> <CR> compe#confirm('<CR>')]]
+    -- vim.cmd [[inoremap <silent><expr> <CR> compe#confirm('<CR>')]]
     vim.cmd [[inoremap <silent><expr> <C-e> compe#close('<C-e>')]]
     vim.cmd [[inoremap <silent><expr> <C-f> compe#scroll({ 'delta': +4 })]]
     vim.cmd [[inoremap <silent><expr> <C-d> compe#scroll({ 'delta': -4 })]]

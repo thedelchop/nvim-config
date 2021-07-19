@@ -32,7 +32,7 @@ nnoremap('<leader>gC', ':Telescope git_commits<CR>')
 inoremap('<C-i>', '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>')
 
 inoremap('<C-Space>', 'compe#complete()', {expr = true})
-inoremap('<CR>', 'compe#confirm("<CR>")', {expr = true})
+-- inoremap('<CR>', 'compe#confirm("<CR>")', {expr = true})
 inoremap('<C-d>', 'compe#scroll({ "delta": -4 }', {expr = true})
 inoremap('<C-e>', 'compe#close("<C-e>")', {expr = true})
 inoremap('<C-f>', 'compe#scroll({ "delta": +4 }', {expr = true})
