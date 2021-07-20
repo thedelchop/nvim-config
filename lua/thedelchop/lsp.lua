@@ -90,11 +90,11 @@ lspconfig.tsserver.setup({
 })
 
 local eslint = {
-    lintCommand = "eslint_d -f unix --config .eslintrc.json --stdin --stdin-filename ${INPUT}",
+    lintCommand = "eslint_d -f unix --stdin --stdin-filename ${INPUT}",
     lintStdin = true,
     lintFormats = {"%f:%l:%c: %m"},
     lintIgnoreExitCode = true,
-    formatCommand = "eslint_d --fix-to-stdout --config .eslintrc.json --stdin --stdin-filename=${INPUT}",
+    formatCommand = "eslint_d --fix-to-stdout --stdin --stdin-filename=${INPUT}",
     formatStdin = true,
     rootMarkers = {".eslintrc", ".eslintrc.js", ".eslintrc.json", "package.json"}
 }
