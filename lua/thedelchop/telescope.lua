@@ -32,7 +32,15 @@ return function()
                     n = {["<c-d>"] = require("telescope.actions").delete_buffer}
                 }
             },
-            git_branches = {layout_strategy = "horizontal", sort_lastused = true, mappings = {i = {}}},
+            git_branches = {
+                previewer = false,
+                theme = "dropdown",
+                sort_lastused = true,
+                file_ignore_patterns = {'origin/'},
+                layout_config = {
+                  width = 94
+                }
+            },
             git_bcommits = {layout_strategy = "horizontal"},
             git_commits = {layout_strategy = "horizontal"},
             current_buffer_fuzzy_find = {previewer = false, layout_strategy = "vertical"}
