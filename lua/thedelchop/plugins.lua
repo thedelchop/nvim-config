@@ -84,6 +84,16 @@ return require('packer').startup(function()
 
     use {'rrethy/vim-hexokinase', run = 'make hexokinase'} -- Render color vaules in the sidebar
 
+    use 'sindrets/diffview.nvim'
+
+    use {
+        'TimUntersberger/neogit',
+        requires = {'nvim-lua/plenary.nvim', 'sindrets/diffview.nvim'},
+        config = function()
+            require('neogit').setup({integrations = {diffview = true}})
+        end
+    }
+
     use {
         'lewis6991/gitsigns.nvim',
         requires = { -- Super fast git decorations implemented purely in lua/teal.

@@ -89,14 +89,47 @@ lspconfig.tsserver.setup({
     end
 })
 
+local eslint = {
+    lintCommand = "eslint_d -f unix --config .eslintrc.json --stdin --stdin-filename ${INPUT}",
+    lintStdin = true,
+    lintFormats = {"%f:%l:%c: %m"},
+    lintIgnoreExitCode = true,
+    formatCommand = "eslint_d --fix-to-stdout --config .eslintrc.json --stdin --stdin-filename=${INPUT}",
+    formatStdin = true,
+    rootMarkers = {".eslintrc", ".eslintrc.js", ".eslintrc.json", "package.json"}
+}
+
+local credo = {
+    lintCommand = "mix credo suggest --format=flycheck --read-from-stdin ${INPUT}",
+    lintStdin = true,
+    lintFormats = {"%f:%l:%c: %t: %m", "%f:%l: %t: %m"},
+    rootMarkers = {"mix.lock", "mix.exs"}
+}
+
 lspconfig.efm.setup({
     filetypes = {"elixir", "lua", "javascript", "javascriptreact", "typescript", "typescriptreact"},
     log_level = vim.lsp.protocol.MessageType.Log,
     message_level = vim.lsp.protocol.MessageType.Log,
     capabilities = capabilities,
-    on_attach = function(client)
-        if vim.bo.filetype == "elixir" then client.resolved_capabilities.document_formatting = false end
+    settings = {
+        languages = {
+            elixir = {credo},
+            javascript = {eslint},
+            javascriptreact = {eslint},
+            ["javascript.jsx"] = {eslint},
+            typescript = {eslint},
+            ["typescript.tsx"] = {eslint},
+            typescriptreact = {eslint}
+        }
+    },
+    on_attach = function(client, bufnr)
+        local filetype = vim.api.nvim_buf_get_option(bufnr, 'filetype')
+
+        if filetype == "elixir" then client.resolved_capabilities.document_formatting = false end
         client.resolved_capabilities.goto_definition = false
+
+        print(client.resolved_capabilities.document_formatting)
+
         on_attach(client)
     end
 })
