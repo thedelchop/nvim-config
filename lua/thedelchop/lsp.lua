@@ -21,6 +21,14 @@ local on_attach = function(client, _)
 
     vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting_sync(nil, 1000)")
 
+    require"lsp_signature".on_attach({
+        bind = false,
+        use_lspsaga = true,
+        handler_opts = {
+            border = "shadow" -- double, single, shadow, none
+        }
+    })
+
     if client.resolved_capabilities.document_formatting then
         vim.api.nvim_exec([[
       augroup LspAutocommands
@@ -87,7 +95,7 @@ lspconfig.efm.setup({
     message_level = vim.lsp.protocol.MessageType.Log,
     capabilities = capabilities,
     on_attach = function(client)
-        if client.name == "elixir" then client.resolved_capabilities.document_formatting = false end
+        if vim.bo.filetype == "elixir" then client.resolved_capabilities.document_formatting = false end
         client.resolved_capabilities.goto_definition = false
         on_attach(client)
     end
