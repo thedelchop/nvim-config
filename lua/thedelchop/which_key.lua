@@ -6,7 +6,7 @@ return function()
     which_key.register({
         ["<leader>"] = {
             b = {name = "Buffers", l = {"List open buffers for search"}, c = {"Close all other buffers"}, d = {"Close buffer"}, s = {"Save file"}},
-            f = {name = "Files", f = {"Find files"}, r = {"Recent files"}, l = {"List files"}, s = {"Save file"}},
+            f = {name = "Files", f = {"Find files"}, l = {"List files"}, r = {"Recent files"},  s = {"Save file"}},
             g = {
                 name = "Git",
                 b = {"List branches for searching"},
@@ -21,6 +21,7 @@ return function()
                 U = {"Unstage buffer"}
             },
             l = {
+                name = "Language Server",
                 a = {"Show available code actions"},
                 d = {"Show definition preview"},
                 D = {"Show type definition"},
@@ -36,13 +37,16 @@ return function()
             },
             q = {q = {"Quit vim"}, Q = {"Quit vim without save"}},
             s = {
+                name = "Search",
                 ["/"] = {"Fuzzy search current workspace"},
                 ["<leader>"] = {"Fuzzy search Vim commands"},
                 b = {"Fuzzy search current buffer"},
                 c = {"Remove search results highlighting"},
+                f = {"Find files"},
                 h = {"Fuzzy search help tags"},
                 H = {"Highlight search results"},
                 m = {"Fuzzy search man pages"},
+                o = {"Recent files"},
                 r = {"Fuzzy search registers"}
             },
             t = {
@@ -65,7 +69,7 @@ return function()
             },
             x = {name = "Text", j = {"Join text object"}, s = {"Split text object"}}
         },
-        ["]"] = {b = {"Next buffer"}, h = {"Next hunk"}, e = {"Next diagnostic"}, t = {"Next test failure"}},
-        ["["] = {b = {"Previous buffer"}, h = {"Previous hunk"}, e = {"Previous diagnostic"}, t = {"Previous test failure"}}
+        ["]"] = { name = "Navigation", b = {"Next buffer"}, h = {"Next hunk"}, e = {"Next diagnostic"}, t = {"Next test failure"}},
+        ["["] = { name = "Navigation", b = {"Previous buffer"}, h = {"Previous hunk"}, e = {"Previous diagnostic"}, t = {"Previous test failure"}}
     })
 end
