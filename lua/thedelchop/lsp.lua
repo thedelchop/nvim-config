@@ -3,6 +3,20 @@ local lspconfig = require("lspconfig")
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
+vim.lsp.handlers["textDocument/formatting"] = function(err, _, result, _, bufnr)
+    if err ~= nil or result == nil then
+        return
+    end
+    if not vim.api.nvim_buf_get_option(bufnr, "modified") then
+        local view = vim.fn.winsaveview()
+        vim.lsp.util.apply_text_edits(result, bufnr)
+        vim.fn.winrestview(view)
+        if bufnr == vim.api.nvim_get_current_buf() then
+            vim.api.nvim_command("noautocmd :update")
+        end
+    end
+end
+
 local on_attach = function(client, _)
 
     vim.cmd [[imap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']]
@@ -99,6 +113,11 @@ local eslint = {
     rootMarkers = {".eslintrc", ".eslintrc.js", ".eslintrc.json", "package.json"}
 }
 
+local prettier = {
+  formatCommand = "prettier_d_slim --stdin --stdin-filepath ${INPUT} --config ./.prettierrc",
+  formatStdin = true
+}
+
 local credo = {
     lintCommand = "mix credo suggest --format=flycheck --read-from-stdin ${INPUT}",
     lintStdin = true,
@@ -114,12 +133,12 @@ lspconfig.efm.setup({
     settings = {
         languages = {
             elixir = {credo},
-            javascript = {eslint},
-            javascriptreact = {eslint},
-            ["javascript.jsx"] = {eslint},
-            typescript = {eslint},
-            ["typescript.tsx"] = {eslint},
-            typescriptreact = {eslint}
+            javascript = {prettier},
+            javascriptreact = {prettier},
+            ["javascript.jsx"] = {prettier},
+            typescript = {prettier},
+            ["typescript.tsx"] = {prettier},
+            typescriptreact = {prettier}
         }
     },
     on_attach = function(client, bufnr)
