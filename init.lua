@@ -60,8 +60,6 @@ g.ultest_output_on_line = 0
 g.splitjoin_split_mapping = ''
 g.splitjoin_join_mapping = ''
 
-g.bufonly_delete_cmd = 'Bwipeout'
-
 cmd [[ let g:test#javascript#lab#options = "--verbose --leaks --transform ./node_modules/lab-transform-typescript"]]
 cmd [[ let g:test#javascript#lab#file_pattern = '\vtest/.*\.ts$' ]]
 

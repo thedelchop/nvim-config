@@ -31,7 +31,6 @@ return require('packer').startup(function()
     use 'b3nj5m1n/kommentary' -- Neovim plugin to comment text in and out, written in lua. Supports commenting out the current line, a visual selection and a motion.
     use 'matze/vim-move' -- Move text objects up/down indent/dedent using keyboard shorcuts
     use 'farmergreg/vim-lastplace' -- Return to the same location in a file when reopening/revisiting it
-    use 'thedelchop/vim-bufonly' -- Provides BufOnly command to close all other buffers
 
     use 'vim-test/vim-test' -- A Vim wrapper for running tests on different granularities.
     use { -- The ultimate testing plugin for NeoVim
@@ -63,7 +62,7 @@ return require('packer').startup(function()
     use 'hrsh7th/vim-vsnip-integ' -- Integrations with man of the common LSP/completion libs
     use 'rafamadriz/friendly-snippets' -- Snippets collection for a set of different programming languages for faster development.
 
-    use 'famiu/bufdelete.nvim'
+    use 'schickling/vim-bufonly' -- Provides BufOnly command to close all other buffers
 
     use { -- provides FZF like searching inside projects
         'nvim-telescope/telescope.nvim',
