@@ -82,7 +82,7 @@ nnoremap('<leader>xs', ':SplitjoinSplit<CR>')
 nnoremap(']b', ':BufferLineCycleNext<CR>')
 nnoremap(']e', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_next()<CR>')
 nnoremap(']t', '<Plug>(ultest-next-fail)')
-nnoremap('[b', ':BufferLineCycleNext<CR>')
+nnoremap('[b', ':BufferLineCyclePrev<CR>')
 nnoremap('[e', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_prev()<CR>')
 nnoremap('[t', '<Plug>(ultest-prev-fail)')
 
