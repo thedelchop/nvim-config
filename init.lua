@@ -15,6 +15,7 @@ opt.expandtab = true -- Use spaces instead of tabs
 opt.errorbells = false
 opt.foldlevelstart = 99
 opt.hidden = true -- Enable background buffers
+opt.exrc = true
 opt.inccommand = "nosplit"
 opt.incsearch = true
 opt.ignorecase = true -- Ignore case
@@ -78,3 +79,5 @@ end
 
 -- Replace the following with the path to your installation
 require("thedelchop.lsp")
+
+require("thedelchop.local_rc").load()

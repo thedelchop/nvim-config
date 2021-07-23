@@ -1,4 +1,11 @@
+vim.fn.setenv("MACOSX_DEPLOYMENT_TARGET", "10.15")
+
+require('packer.luarocks').install_commands()
+require('packer.luarocks').setup_paths()
+
 return require('packer').startup(function()
+    use_rocks 'luafilesystem'
+
     use 'wbthomason/packer.nvim'
 
     use 'tjdevries/nlua.nvim' -- Lua Development for Neovim
