@@ -2,6 +2,7 @@ local nnoremap = require("thedelchop.utils").nnoremap
 local inoremap = require("thedelchop.utils").inoremap
 local vnoremap = require("thedelchop.utils").vnoremap
 local xnoremap = require("thedelchop.utils").xnoremap
+local augroup = require("thedelchop.utils").augroup
 
 inoremap('jk', '<Esc>') -- Map escape to "jk"
 
@@ -86,3 +87,7 @@ nnoremap('[b', ':BufferLineCyclePrev<CR>')
 nnoremap('[e', '<cmd>lua require("lspsaga.diagnostic").lsp_jump_diagnostic_prev()<CR>')
 nnoremap('[t', '<Plug>(ultest-prev-fail)')
 
+augroup("JsonSearch", function(autocmd)
+  autocmd [[ FileType json nnoremap <buffer> <leader>ll :JqxList<CR> ]]
+  autocmd [[FileType json nnoremap <buffer> <leader>ls :JqxQuery<CR>]]
+end)

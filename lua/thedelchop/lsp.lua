@@ -1,4 +1,5 @@
 local lspconfig = require("lspconfig")
+local augroup = require("thedelchop.utils").augroup
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -44,12 +45,9 @@ local on_attach = function(client, _)
     })
 
     if client.resolved_capabilities.document_formatting then
-        vim.api.nvim_exec([[
-      augroup LspAutocommands
-          autocmd! * <buffer>
-          autocmd BufWritePre <buffer> LspFormatting
-      augroup END
-      ]], true)
+      augroup('LspAutocommands', function(autocmd)
+        autocmd [[ BufWritePre <buffer> LspFormatting ]]
+      end)
     end
 end
 
