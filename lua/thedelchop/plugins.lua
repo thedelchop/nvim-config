@@ -139,7 +139,7 @@ return require('packer').startup(function()
     use {"folke/which-key.nvim", config = require("thedelchop.which_key")}
 
     use { -- Easily browse, preview and search JSON files
-      'thedelchop/nvim-jqx',
+      'gennaro-tedesco/nvim-jqx',
       config = function()
         local jqx_config = require('nvim-jqx.config')
 
