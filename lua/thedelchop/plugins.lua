@@ -22,7 +22,15 @@ return require('packer').startup(function()
     use 'christoomey/vim-tmux-runner' -- A simple, vimscript only, command runner for sending commands from vim to tmux.
     use 'christoomey/vim-tmux-navigator' -- Navigate in and out of Vim and Tmux seamlessly
 
-    use 'blackCauldron7/surround.nvim' -- The plugin provides mappings to easily delete, change and add such surroundings in pairs.
+    use {  -- The plugin provides mappings to easily delete, change and add such surroundings in pairs.
+    'blackCauldron7/surround.nvim',
+    config = function()
+      require "surround".setup({
+        mappings_style = "surround"
+      })
+    end
+    }
+
     use 'tpope/vim-projectionist' -- Set of use utilities to define things like alternate files and jump locations for all projects
     use 'tpope/vim-rails' -- Vim plugin for editing Ruby on Rails applications.
     use 'tpope/vim-repeat' -- Repeat.vim remaps . in a way that plugins can tap into it.
