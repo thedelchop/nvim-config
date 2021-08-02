@@ -60,9 +60,6 @@ g.ultest_output_on_line = 0
 g.splitjoin_split_mapping = ''
 g.splitjoin_join_mapping = ''
 
-cmd [[ let g:test#javascript#lab#options = "--verbose --leaks --transform ./node_modules/lab-transform-typescript"]]
-cmd [[ let g:test#javascript#lab#file_pattern = '\vtest/.*\.ts$' ]]
-
 cmd [[colorscheme dracula]]
 
 require("thedelchop.keymaps")
