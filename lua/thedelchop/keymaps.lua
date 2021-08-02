@@ -15,7 +15,7 @@ nnoremap('<Leader>fr', ":Telescope oldfiles<CR>")
 nnoremap('<Leader>fs', ":w<CR>")
 
 nnoremap('<leader>bc', ':BufOnly<CR>')
-nnoremap('<leader>bd', ':Bdelete<CR>')
+nnoremap('<leader>bd', ':bdel<CR>')
 nnoremap('<leader>bl', ':Telescope buffers<CR>')
 
 nnoremap('<leader>w=', '<C-W>=')
