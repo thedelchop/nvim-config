@@ -32,8 +32,8 @@ nnoremap('<leader>gC', ':Telescope git_commits<CR>')
 
 inoremap('<C-i>', '<cmd>lua require("lspsaga.signaturehelp").signature_help()<CR>')
 
-inoremap('<C-Space>', 'compe#complete()', {expr = true})
--- inoremap('<CR>', 'compe#confirm("<CR>")', {expr = true})
+inoremap('<Tab>', 'compe#complete()', {expr = true})
+inoremap('<CR>', 'compe#confirm("<CR>")', {expr = true})
 inoremap('<C-d>', 'compe#scroll({ "delta": -4 }', {expr = true})
 inoremap('<C-e>', 'compe#close("<C-e>")', {expr = true})
 inoremap('<C-f>', 'compe#scroll({ "delta": +4 }', {expr = true})
@@ -51,8 +51,8 @@ nnoremap('<leader>lr', '<cmd>lua require("lspsaga.rename").rename()<CR>')
 nnoremap('<leader>ls', '<cmd>lua require("telescope.builtin").lsp_document_symbols{}<CR>')
 nnoremap('<leader>lS', '<cmd>lua require("telescope.builtin").lsp_workspace_symbols{}<CR>')
 
-nnoremap('<C-j>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>')
-nnoremap('<C-k>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>')
+nnoremap('<silent><C-f>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>')
+nnoremap('<silent><C-b>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>')
 
 vnoremap('<leader>la', ':<C-U>lua require("lspsaga.codeaction").range_code_action()<CR>')
 
