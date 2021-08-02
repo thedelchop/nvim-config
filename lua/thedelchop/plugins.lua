@@ -89,12 +89,7 @@ return require('packer').startup(function()
         end
     }
 
-    use {
-        'ray-x/lsp_signature.nvim', -- Show function signature when you type
-        config = function()
-            require"lsp_signature".setup()
-        end
-    }
+    use 'ray-x/lsp_signature.nvim' -- Show function signature when you type
 
     use {'rrethy/vim-hexokinase', run = 'make hexokinase'} -- Render color vaules in the sidebar
 
