@@ -138,6 +138,8 @@ return require('packer').startup(function()
 
     use {"folke/which-key.nvim", config = require("thedelchop.which_key")}
 
+    use 'ygm2/rooter.nvim'
+
     use { -- Easily browse, preview and search JSON files
       'gennaro-tedesco/nvim-jqx',
       config = function()
