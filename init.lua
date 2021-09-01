@@ -1,3 +1,5 @@
+local augroup = require("thedelchop.utils").augroup
+
 local g = vim.g -- a table to access global variables
 local opt = vim.opt -- to set options
 local cmd = vim.cmd
@@ -71,6 +73,12 @@ if showRecentFilesFinder then
 
     vim.api.nvim_exec("autocmd VimEnter * ShowRecentFiles", false)
 end
+
+augroup('Markdown', function(autocmd)
+  autocmd [[FileType markdown setlocal textwidth=110]]
+  autocmd [[FileType markdown setlocal wrap]]
+  autocmd [[FileType markdown setlocal spell]]
+end)
 
 -- Replace the following with the path to your installation
 require("thedelchop.lsp")

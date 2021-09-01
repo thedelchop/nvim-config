@@ -21,7 +21,7 @@ return function()
         },
         source = {
             path = true,
-            buffer = true,
+            buffer = false,
             calc = false,
             vsnip = true,
             nvim_lsp = true,

@@ -11,6 +11,7 @@ xnoremap('<', '<gv')
 
 nnoremap('<Leader>ff', ":Telescope git_files<CR>")
 nnoremap('<Leader>fl', ':NvimTreeToggle<CR>')
+nnoremap('<Leader>fo', ':NvimTreeFindFile<CR>')
 nnoremap('<Leader>fr', ":Telescope oldfiles<CR>")
 nnoremap('<Leader>fs', ":w<CR>")
 
@@ -48,8 +49,9 @@ nnoremap('<leader>lf', '<cmd>lua require("lspsaga.provider").lsp_finder()<CR>')
 nnoremap('<leader>lh', '<cmd>lua require("lspsaga.hover").render_hover_doc()<CR>')
 nnoremap('<leader>li', '<cmd>lua vim.lsp.buf.implementation()<CR>')
 nnoremap('<leader>lr', '<cmd>lua require("lspsaga.rename").rename()<CR>')
-nnoremap('<leader>ls', '<cmd>lua require("telescope.builtin").lsp_document_symbols{}<CR>')
+nnoremap('<leader>ls', ':LspStart<CR>')
 nnoremap('<leader>lS', '<cmd>lua require("telescope.builtin").lsp_workspace_symbols{}<CR>')
+nnoremap('<leader>lx', ':LspStop<CR>')
 
 nnoremap('<silent><C-f>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(1)<CR>')
 nnoremap('<silent><C-b>', '<cmd>lua require("lspsaga.action").smart_scroll_with_saga(-1)<CR>')

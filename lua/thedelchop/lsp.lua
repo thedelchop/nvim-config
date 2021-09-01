@@ -23,8 +23,9 @@ local on_attach = function(client, _)
     vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting_sync(nil, 1000)")
 
     require"lsp_signature".on_attach({
-        bind = false,
-        use_lspsaga = true,
+        bind = true,
+        fix_pos = true,
+        use_lspsaga = false,
         handler_opts = {
             border = "shadow" -- double, single, shadow, none
         }
@@ -97,11 +98,6 @@ local eslint = {
     rootMarkers = {".eslintrc", ".eslintrc.js", ".eslintrc.json", "package.json"}
 }
 
-local prettier = {
-  formatCommand = "prettier_d_slim --stdin --stdin-filepath ${INPUT} --config ./.prettierrc",
-  formatStdin = true
-}
-
 local credo = {
     lintCommand = "mix credo suggest --format=flycheck --read-from-stdin ${INPUT}",
     lintStdin = true,
@@ -117,12 +113,12 @@ lspconfig.efm.setup({
     settings = {
         languages = {
             elixir = {credo},
-            javascript = {prettier},
-            javascriptreact = {prettier},
-            ["javascript.jsx"] = {prettier},
-            typescript = {prettier},
-            ["typescript.tsx"] = {prettier},
-            typescriptreact = {prettier}
+            javascript = {eslint},
+            javascriptreact = {eslint},
+            ["javascript.jsx"] = {eslint},
+            typescript = {eslint},
+            ["typescript.tsx"] = {eslint},
+            typescriptreact = {eslint}
         }
     },
     on_attach = function(client, bufnr)
@@ -130,8 +126,6 @@ lspconfig.efm.setup({
 
         if filetype == "elixir" then client.resolved_capabilities.document_formatting = false end
         client.resolved_capabilities.goto_definition = false
-
-        print(client.resolved_capabilities.document_formatting)
 
         on_attach(client)
     end

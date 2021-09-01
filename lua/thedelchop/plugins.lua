@@ -85,7 +85,22 @@ return require('packer').startup(function()
     use {
         'glepnir/lspsaga.nvim',
         config = function() -- Looks cool, provides a UI for Vim LSP
-            require('lspsaga').init_lsp_saga()
+            require('lspsaga').init_lsp_saga({
+              code_action_prompt = {
+                enable = true,
+                sign = true,
+                sign_priority = 20,
+                virtual_text = false,
+              },
+              code_action_keys = {
+                quit = 'q',
+                exec = '<CR>'
+              },
+              rename_action_keys = {
+                quit = {'q', '<C-c>'},
+                exec = '<CR>'
+              },
+            })
         end
     }
 
