@@ -160,5 +160,9 @@ return require('packer').startup(function()
         jqx_config.close_window_key = 'q'
       end
     }
+
+    use 'slim-template/vim-slim'
+
+    use 'chrisbra/csv.vim'
 end)
 
