@@ -70,8 +70,6 @@ return require('packer').startup(function()
     use 'hrsh7th/vim-vsnip-integ' -- Integrations with man of the common LSP/completion libs
     use 'rafamadriz/friendly-snippets' -- Snippets collection for a set of different programming languages for faster development.
 
-    use 'schickling/vim-bufonly' -- Provides BufOnly command to close all other buffers
-
     use { -- provides FZF like searching inside projects
         'nvim-telescope/telescope.nvim',
         requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
@@ -164,5 +162,6 @@ return require('packer').startup(function()
     use 'slim-template/vim-slim'
 
     use 'chrisbra/csv.vim'
+    use 'kazhala/close-buffers.nvim' -- This plugin allows you to quickly delete multiple buffers based on the conditions provided.
 end)
 

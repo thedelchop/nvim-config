@@ -15,8 +15,9 @@ nnoremap('<Leader>fo', ':NvimTreeFindFile<CR>')
 nnoremap('<Leader>fr', ":Telescope oldfiles<CR>")
 nnoremap('<Leader>fs', ":w<CR>")
 
-nnoremap('<leader>bc', ':BufOnly<CR>')
-nnoremap('<leader>bd', ':bdel<CR>')
+nnoremap('<leader>bc', '<cmd>lua require("close_buffers").delete({type = "hidden"})<CR>')
+nnoremap('<leader>bd', '<cmd>lua require("close_buffers").delete({type = "this"})<CR>')
+nnoremap('<leader>be', '<cmd>lua require("close_buffers").delete({type = "nameless"})<CR>')
 nnoremap('<leader>bl', ':Telescope buffers<CR>')
 
 nnoremap('<leader>w=', '<C-W>=')
