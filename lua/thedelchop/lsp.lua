@@ -49,7 +49,7 @@ end
 
 vim.lsp.set_log_level(0)
 
-local path_to_elixirls = vim.fn.expand("~/.local/share/elixir-ls/rel/language_server.sh")
+local path_to_elixirls = vim.fn.expand("~/.local/share/elixir-ls/language_server.sh")
 local path_to_lua_ls = vim.fn.expand("~/.local/share/lua-language-server")
 local path_to_lua_ls_binary = path_to_lua_ls .. "/bin/macOS/lua-language-server"
 local path_to_lua_ls_main = path_to_lua_ls .. "/main.lua"
