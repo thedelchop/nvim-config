@@ -105,8 +105,13 @@ local credo = {
     rootMarkers = {"mix.lock", "mix.exs"}
 }
 
+local prettier = {
+  formatCommand = 'prettier --stdin-filepath ${INPUT}',
+  formatStdin = true,
+}
+
 lspconfig.efm.setup({
-    filetypes = {"elixir", "lua", "javascript", "javascriptreact", "typescript", "typescriptreact"},
+    filetypes = {"elixir", "lua", "javascript", "javascriptreact", "typescript", "typescriptreact", "html", "yaml", "css", "markdown"},
     log_level = vim.lsp.protocol.MessageType.Log,
     message_level = vim.lsp.protocol.MessageType.Log,
     capabilities = capabilities,
@@ -118,7 +123,11 @@ lspconfig.efm.setup({
             ["javascript.jsx"] = {eslint},
             typescript = {eslint},
             ["typescript.tsx"] = {eslint},
-            typescriptreact = {eslint}
+            typescriptreact = {eslint},
+            html = {prettier},
+            yaml = {prettier},
+            css = {prettier},
+            markdown = {prettier},
         }
     },
     on_attach = function(client, bufnr)
