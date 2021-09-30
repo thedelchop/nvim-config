@@ -159,9 +159,10 @@ return require('packer').startup(function()
       end
     }
 
-    use 'slim-template/vim-slim'
+    use 'slim-template/vim-slim' -- Slim syntax highlighting for vim.
 
-    use 'chrisbra/csv.vim'
+    use 'chrisbra/csv.vim' -- This plugin is used for handling column separated data with Vim, the aim of this plugin is to ease handling these kinds of files
+
     use 'kazhala/close-buffers.nvim' -- This plugin allows you to quickly delete multiple buffers based on the conditions provided.
 end)
 
