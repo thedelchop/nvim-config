@@ -47,12 +47,8 @@ require("thedelchop.plugins")
 
 g.mapleader = ";"
 
-g.nvim_tree_side = 'right'
-g.nvim_tree_width = 40
 g.nvim_tree_ignore = {'.git', 'node_modules', '.cache'}
 g.nvim_tree_gitignore = 1
-g.nvim_tree_auto_open = 0
-g.nvim_tree_auto_close = 1
 
 g.ultest_use_pty = 1
 g.ultest_virtual_text = 1

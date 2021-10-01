@@ -77,7 +77,17 @@ return require('packer').startup(function()
     }
     use {
         'kyazdani42/nvim-tree.lua', -- NERDTree like file-explorer written in Lua
-        requires = 'kyazdani42/nvim-web-devicons'
+        requires = 'kyazdani42/nvim-web-devicons',
+        config = function()
+          require'nvim-tree'.setup({
+            auto_close = true,
+            view = {
+              width = 40,
+              side = 'right'
+            }
+          })
+        end
+
     }
 
     use {
