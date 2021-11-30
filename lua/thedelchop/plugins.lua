@@ -81,6 +81,7 @@ return require('packer').startup(function()
         config = function()
           require'nvim-tree'.setup({
             auto_close = true,
+            hide_root_folder = true,
             view = {
               width = 40,
               side = 'right'
@@ -88,28 +89,6 @@ return require('packer').startup(function()
           })
         end
 
-    }
-
-    use {
-        'glepnir/lspsaga.nvim',
-        config = function() -- Looks cool, provides a UI for Vim LSP
-            require('lspsaga').init_lsp_saga({
-              code_action_prompt = {
-                enable = true,
-                sign = true,
-                sign_priority = 20,
-                virtual_text = false,
-              },
-              code_action_keys = {
-                quit = 'q',
-                exec = '<CR>'
-              },
-              rename_action_keys = {
-                quit = {'q', '<C-c>'},
-                exec = '<CR>'
-              },
-            })
-        end
     }
 
     use 'ray-x/lsp_signature.nvim' -- Show function signature when you type
@@ -154,6 +133,8 @@ return require('packer').startup(function()
         config = require("thedelchop.treesitter")
     }
 
+    use 'nvim-treesitter/nvim-treesitter-textobjects'
+
     use {"folke/which-key.nvim", config = require("thedelchop.which_key")}
 
     use 'ygm2/rooter.nvim'
@@ -174,5 +155,6 @@ return require('packer').startup(function()
     use 'chrisbra/csv.vim' -- This plugin is used for handling column separated data with Vim, the aim of this plugin is to ease handling these kinds of files
 
     use 'kazhala/close-buffers.nvim' -- This plugin allows you to quickly delete multiple buffers based on the conditions provided.
-end)
 
+    use 'McAuleyPenney/tidy.nvim' -- A function and autocommand pair that removes all trailing whitespace and newlines at the end of a buffer on save
+end)

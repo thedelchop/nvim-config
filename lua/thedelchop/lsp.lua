@@ -14,7 +14,7 @@ local on_attach = function(client, _)
     vim.cmd [[imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>']]
     vim.cmd [[smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>']]
 
-    vim.cmd [[inoremap <silent><expr> <C-Space> compe#complete()]]
+    -- vim.cmd [[inoremap <silent><expr> <Tab> compe#complete()]]
     -- vim.cmd [[inoremap <silent><expr> <CR> compe#confirm('<CR>')]]
     vim.cmd [[inoremap <silent><expr> <C-e> compe#close('<C-e>')]]
     vim.cmd [[inoremap <silent><expr> <C-f> compe#scroll({ 'delta': +4 })]]
@@ -150,6 +150,11 @@ lspconfig.efm.setup({
     end
 })
 
-setup("solargraph", {})
-setup("vimls", {})
+lspconfig.solargraph.setup({
+  on_attach = function(client)
+    client.resolved_capabilities.document_formatting = false
+    on_attach(client)
+  end
+})
 
+setup("vimls", {})

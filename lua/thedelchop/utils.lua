@@ -25,6 +25,16 @@ local set_opt = function(scope, key, value)
     if scope ~= "o" and scope ~= "g" then scopes["o"][key] = value end
 end
 
+D.togglepaste = function()
+  if(vim.api.nvim_get_option("paste") == false) then
+    vim.api.nvim_set_option("paste", true)
+    vim.api.nvim_echo({{"Paste mode enabled", "Normal"}}, true, {})
+  else
+    vim.api.nvim_set_option("paste", false)
+    vim.api.nvim_echo({{"Paste mode disabled", "Normal"}}, true, {})
+  end
+end
+
 D.opt = {
     o = function(key, value)
         set_opt("o", key, value)

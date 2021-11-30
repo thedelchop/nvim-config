@@ -42,13 +42,20 @@ opt.visualbell = true
 opt.wildmode = {'list', 'longest'} -- Command-line completion mode
 opt.wrap = false -- Disable line wrap
 opt.termguicolors = true
+opt.listchars = {
+  trail = '~',
+  tab = ">-",
+  nbsp ="␣"
+}
+
+g.nvim_tree_ignore = {'.git', 'node_modules', '.cache'}
+g.nvim_tree_gitignore = 1
 
 require("thedelchop.plugins")
 
 g.mapleader = ";"
 
-g.nvim_tree_ignore = {'.git', 'node_modules', '.cache'}
-g.nvim_tree_gitignore = 1
+g.matchup_surround_enabled = 1
 
 g.ultest_use_pty = 1
 g.ultest_virtual_text = 1
@@ -59,6 +66,8 @@ g.splitjoin_split_mapping = ''
 g.splitjoin_join_mapping = ''
 
 cmd [[colorscheme dracula]]
+
+require("thedelchop.highlights")
 
 require("thedelchop.keymaps")
 
