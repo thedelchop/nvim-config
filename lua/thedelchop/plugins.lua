@@ -80,11 +80,19 @@ return require('packer').startup(function()
         requires = 'kyazdani42/nvim-web-devicons',
         config = function()
           require'nvim-tree'.setup({
+            hijack_netrw = false,
             auto_close = true,
             hide_root_folder = true,
             view = {
               width = 40,
               side = 'right'
+            },
+            filters = {
+              custom = {'.git', 'node_modules', '.cache'}
+            },
+            git = {
+              enable = true,
+              ignore = true
             }
           })
         end
