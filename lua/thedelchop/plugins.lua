@@ -165,4 +165,14 @@ return require('packer').startup(function()
     use 'kazhala/close-buffers.nvim' -- This plugin allows you to quickly delete multiple buffers based on the conditions provided.
 
     use 'McAuleyPenney/tidy.nvim' -- A function and autocommand pair that removes all trailing whitespace and newlines at the end of a buffer on save
+
+    use { -- Show indententation levels of my code
+      'lukas-reineke/indent-blankline.nvim',
+      config = function ()
+        require("indent_blankline").setup {
+           show_end_of_line = true,
+           space_char_blankline = " ",
+      }
+      end
+    }
 end)
