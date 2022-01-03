@@ -37,8 +37,6 @@ nnoremap('<leader>gC', "<cmd>lua require('telescope.builtin').git_commits()<CR>"
 
 inoremap('<C-i>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
 
-inoremap('<Tab>', 'compe#complete()', {expr = true})
-inoremap('<CR>', 'compe#confirm("<CR>")', {expr = true})
 inoremap('<C-d>', 'compe#scroll({ "delta": -4 }', {expr = true})
 inoremap('<C-e>', 'compe#close("<C-e>")', {expr = true})
 inoremap('<C-f>', 'compe#scroll({ "delta": +4 }', {expr = true})

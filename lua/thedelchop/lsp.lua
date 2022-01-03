@@ -14,8 +14,8 @@ local on_attach = function(client, _)
     vim.cmd [[imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>']]
     vim.cmd [[smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>']]
 
-    -- vim.cmd [[inoremap <silent><expr> <Tab> compe#complete()]]
-    -- vim.cmd [[inoremap <silent><expr> <CR> compe#confirm('<CR>')]]
+    vim.cmd [[inoremap <silent><expr> <C-Tab> compe#complete()]]
+    vim.cmd [[inoremap <silent><expr> <CR>  compe#confirm(luaeval("require 'nvim-autopairs'.autopairs_cr()"))]]
     vim.cmd [[inoremap <silent><expr> <C-e> compe#close('<C-e>')]]
     vim.cmd [[inoremap <silent><expr> <C-f> compe#scroll({ 'delta': +4 })]]
     vim.cmd [[inoremap <silent><expr> <C-d> compe#scroll({ 'delta': -4 })]]
@@ -24,8 +24,11 @@ local on_attach = function(client, _)
 
     require"lsp_signature".on_attach({
         bind = true,
-        fix_pos = true,
+        hint_enable = false,
+        fix_pos = false,
         use_lspsaga = false,
+        max_height = 24,
+        always_trigger = false,
         handler_opts = {
             border = "shadow" -- double, single, shadow, none
         }
@@ -76,7 +79,7 @@ setup("sumneko_lua", {
     }
 })
 
-setup("elixirls", {settings = {elixirLS = {dialyzerEnabled = false, fetchDeps = false}}, cmd = {path_to_elixirls}})
+setup("elixirls", {settings = {elixirLS = {dialyzerEnabled = true, fetchDeps = false}}, cmd = {path_to_elixirls}})
 
 lspconfig.tsserver.setup({
     log_level = vim.lsp.protocol.MessageType.Log,
@@ -153,6 +156,7 @@ lspconfig.efm.setup({
 lspconfig.solargraph.setup({
   on_attach = function(client)
     client.resolved_capabilities.document_formatting = false
+
     on_attach(client)
   end
 })
