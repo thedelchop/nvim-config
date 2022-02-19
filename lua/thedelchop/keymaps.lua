@@ -9,7 +9,6 @@ inoremap('jk', '<Esc>') -- Map escape to "jk"
 xnoremap('>', '>gv')
 xnoremap('<', '<gv')
 
-
 nnoremap('<Leader>p', '<cmd>lua require("thedelchop.utils").togglepaste()<CR>')
 
 nnoremap('<Leader>ff', "<cmd>lua require('telescope.builtin').git_files()<CR>")
@@ -83,11 +82,13 @@ nnoremap('<leader>xj', ':SplitjoinJoin<CR>')
 nnoremap('<leader>xs', ':SplitjoinSplit<CR>')
 
 nnoremap(']b', ':BufferLineCycleNext<CR>')
-nnoremap(']e', '<cmd>lua vim.diagnostic.goto_next()<CR>')
-nnoremap(']t', '<Plug>(ultest-next-fail)')
 nnoremap('[b', ':BufferLineCyclePrev<CR>')
-nnoremap('[e', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
+
+nnoremap(']t', '<Plug>(ultest-next-fail)')
 nnoremap('[t', '<Plug>(ultest-prev-fail)')
+
+nnoremap(']e', '<cmd>lua vim.diagnostic.goto_next()<CR>')
+nnoremap('[e', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
 
 augroup("JsonSearch", function(autocmd)
   autocmd [[ FileType json nnoremap <buffer> <leader>ll :JqxList<CR> ]]
