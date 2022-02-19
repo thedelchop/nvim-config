@@ -2,7 +2,11 @@ return function()
     require('gitsigns').setup({
         attach_to_untracked = false,
         current_line_blame = true,
-        current_line_blame_position = 'eol',
+        current_line_blame_opts = {
+          virt_text = true,
+          virt_text_pos = 'eol',
+          delay = 500
+        },
         keymaps = {
             noremap = true,
 
