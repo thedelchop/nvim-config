@@ -70,9 +70,15 @@ return require('packer').startup(function()
     use 'hrsh7th/vim-vsnip-integ' -- Integrations with man of the common LSP/completion libs
     use 'rafamadriz/friendly-snippets' -- Snippets collection for a set of different programming languages for faster development.
 
+    use 'nvim-telescope/telescope-file-browser.nvim'
+
     use { -- provides FZF like searching inside projects
         'nvim-telescope/telescope.nvim',
-        requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}},
+        requires = {
+          {'nvim-lua/popup.nvim'},
+          {'nvim-lua/plenary.nvim'},
+          {'nvim-telescope/telescope-file-browser.nvim'}
+        },
         config = require("thedelchop.telescope")
     }
     use {

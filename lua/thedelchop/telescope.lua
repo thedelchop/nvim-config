@@ -46,4 +46,6 @@ return function()
             current_buffer_fuzzy_find = {previewer = false, layout_strategy = "vertical"}
         }
     }
+
+    require("telescope").load_extension "file_browser"
 end
