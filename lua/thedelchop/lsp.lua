@@ -50,11 +50,11 @@ local setup = function(name, opts)
     }, opts))
 end
 
-vim.lsp.set_log_level(0)
+vim.lsp.set_log_level(4)
 
-local path_to_elixirls = vim.fn.expand("~/.local/share/elixir-ls/language_server.sh")
-local path_to_lua_ls = vim.fn.expand("~/.local/share/lua-language-server")
-local path_to_lua_ls_binary = path_to_lua_ls .. "/bin/macOS/lua-language-server"
+local path_to_elixirls = vim.fn.expand("~/.local/share/elixir-ls/rel/language_server.sh")
+local path_to_lua_ls = vim.fn.expand("/opt/homebrew/Cellar/lua-language-server/2.6.3/libexec/bin")
+local path_to_lua_ls_binary = path_to_lua_ls .. "/lua-language-server"
 local path_to_lua_ls_main = path_to_lua_ls .. "/main.lua"
 
 setup("sumneko_lua", {
