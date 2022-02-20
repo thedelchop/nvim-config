@@ -76,6 +76,11 @@ if showRecentFilesFinder then
     vim.api.nvim_exec("autocmd VimEnter * ShowRecentFiles", false)
 end
 
+augroup('Guihua', function(autocmd)
+  autocmd [[FileType guihua lua require('cmp').setup.buffer { enabled = false }]]
+  autocmd [[FileType guihua_rust lua require('cmp').setup.buffer { enabled = false }]]
+end)
+
 augroup('Markdown', function(autocmd)
   autocmd [[FileType markdown setlocal textwidth=110]]
   autocmd [[FileType markdown setlocal wrap]]

@@ -50,7 +50,9 @@ return require('packer').startup(function()
     use {
         'windwp/nvim-autopairs',
         config = function()
-            require('nvim-autopairs').setup({})
+            require('nvim-autopairs').setup({
+              disable_filetype = { "TelescopePrompt" , "guihua", "guihua_rust", "clap_input" },
+            })
         end
     }
     use 'windwp/nvim-ts-autotag' -- Auto close HTML tags
@@ -61,11 +63,19 @@ return require('packer').startup(function()
     use {'npxbr/glow.nvim', run = ":GlowInstall"} -- Glow is a markdown preview plugin using Glow library
 
     use 'neovim/nvim-lspconfig' -- provides lsp servers for nvim lsp client
-    use { -- provide autocompletion
-        'hrsh7th/nvim-compe',
-        requires = 'windwp/nvim-autopairs',
-        config = require("thedelchop.compe")
+
+    use 'hrsh7th/cmp-nvim-lsp'
+    use 'hrsh7th/cmp-buffer'
+    use 'hrsh7th/cmp-path'
+    use 'hrsh7th/cmp-cmdline'
+    use 'hrsh7th/cmp-vsnip'
+    use 'ray-x/cmp-treesitter'
+
+    use {
+      'hrsh7th/nvim-cmp',
+      config = require("thedelchop.cmp")
     }
+
     use 'hrsh7th/vim-vsnip' -- Allow vim to use LSP snippets
     use 'hrsh7th/vim-vsnip-integ' -- Integrations with man of the common LSP/completion libs
     use 'rafamadriz/friendly-snippets' -- Snippets collection for a set of different programming languages for faster development.

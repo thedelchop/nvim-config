@@ -1,8 +1,7 @@
 local lspconfig = require("lspconfig")
 local augroup = require("thedelchop.utils").augroup
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 local on_attach = function(client, _)
 
@@ -13,12 +12,6 @@ local on_attach = function(client, _)
     vim.cmd [[smap <expr> <Tab> vsnip#jumpable(1) ? '<Plug>(vsnip-jump-next)' : '<Tab>']]
     vim.cmd [[imap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>']]
     vim.cmd [[smap <expr> <S-Tab> vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : '<S-Tab>']]
-
-    vim.cmd [[inoremap <silent><expr> <C-Tab> compe#complete()]]
-    vim.cmd [[inoremap <silent><expr> <CR>  compe#confirm(luaeval("require 'nvim-autopairs'.autopairs_cr()"))]]
-    vim.cmd [[inoremap <silent><expr> <C-e> compe#close('<C-e>')]]
-    vim.cmd [[inoremap <silent><expr> <C-f> compe#scroll({ 'delta': +4 })]]
-    vim.cmd [[inoremap <silent><expr> <C-d> compe#scroll({ 'delta': -4 })]]
 
     vim.cmd("command! LspFormatting lua vim.lsp.buf.formatting_sync(nil, 1000)")
 
@@ -154,6 +147,7 @@ lspconfig.efm.setup({
 })
 
 lspconfig.solargraph.setup({
+  capabilities = capabilities,
   on_attach = function(client)
     client.resolved_capabilities.document_formatting = false
 
