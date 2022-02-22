@@ -87,7 +87,4 @@ augroup('Markdown', function(autocmd)
   autocmd [[FileType markdown setlocal spell]]
 end)
 
--- Replace the following with the path to your installation
-require("thedelchop.lsp")
-
 require("thedelchop.local_rc").load()

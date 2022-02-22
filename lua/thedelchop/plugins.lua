@@ -9,8 +9,7 @@ return require('packer').startup(function()
     use 'wbthomason/packer.nvim'
 
     use 'tjdevries/nlua.nvim' -- Lua Development for Neovim
-    use 'norcalli/nvim.lua' -- nvim is an object which contains shortcut/magic methods that are very useful for mappings.
-    use 'tjdevries/astronauta.nvim' -- Until I merge: https://github.com/neovim/neovim/pull/13823 you can use lua keymaps by installing this plugin.
+    use 'norcalli/nvim.lua' -- nvim is an object which contains shortcut/magic methods that are very useful for mappings. use 'tjdevries/astronauta.nvim' -- Until I merge: https://github.com/neovim/neovim/pull/13823 you can use lua keymaps by installing this plugin.
 
     use 'nvim-lua/plenary.nvim' -- All the lua functions I don't want to write twice.
     use 'kyazdani42/nvim-web-devicons' -- Set of icons for NeoVim that nvim-tree and lspsaga use for icons
@@ -69,7 +68,6 @@ return require('packer').startup(function()
     use 'hrsh7th/cmp-path'
     use 'hrsh7th/cmp-cmdline'
     use 'hrsh7th/cmp-vsnip'
-    use 'ray-x/cmp-treesitter'
 
     use {
       'hrsh7th/nvim-cmp',
@@ -117,6 +115,12 @@ return require('packer').startup(function()
 
     use 'ray-x/lsp_signature.nvim' -- Show function signature when you type
 
+    use {
+      'ray-x/navigator.lua',
+      requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'},
+      config = require("thedelchop.navigator")
+    }
+
     use {'rrethy/vim-hexokinase', run = 'make hexokinase'} -- Render color vaules in the sidebar
 
     use 'sindrets/diffview.nvim'
@@ -157,6 +161,7 @@ return require('packer').startup(function()
         config = require("thedelchop.treesitter")
     }
 
+    use 'nvim-treesitter/nvim-treesitter-refactor'
     use 'nvim-treesitter/nvim-treesitter-textobjects'
 
     use {"folke/which-key.nvim", config = require("thedelchop.which_key")}
