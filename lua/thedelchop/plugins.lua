@@ -21,13 +21,11 @@ return require('packer').startup(function()
     use 'christoomey/vim-tmux-runner' -- A simple, vimscript only, command runner for sending commands from vim to tmux.
     use 'christoomey/vim-tmux-navigator' -- Navigate in and out of Vim and Tmux seamlessly
 
-    use {  -- The plugin provides mappings to easily delete, change and add such surroundings in pairs.
-    'blackCauldron7/surround.nvim',
-    config = function()
-      require "surround".setup({
-        mappings_style = "surround"
-      })
-    end
+    use {
+        "ur4ltz/surround.nvim",
+        config = function()
+            require"surround".setup {mappings_style = "surround"}
+        end
     }
 
     use 'tpope/vim-projectionist' -- Set of use utilities to define things like alternate files and jump locations for all projects
@@ -50,7 +48,9 @@ return require('packer').startup(function()
         'windwp/nvim-autopairs',
         config = function()
             require('nvim-autopairs').setup({
-              disable_filetype = { "TelescopePrompt" , "guihua", "guihua_rust", "clap_input" },
+                disable_filetype = {
+                    "TelescopePrompt", "guihua", "guihua_rust", "clap_input"
+                }
             })
         end
     }
@@ -69,10 +69,7 @@ return require('packer').startup(function()
     use 'hrsh7th/cmp-cmdline'
     use 'hrsh7th/cmp-vsnip'
 
-    use {
-      'hrsh7th/nvim-cmp',
-      config = require("thedelchop.cmp")
-    }
+    use {'hrsh7th/nvim-cmp', config = require("thedelchop.cmp")}
 
     use 'hrsh7th/vim-vsnip' -- Allow vim to use LSP snippets
     use 'hrsh7th/vim-vsnip-integ' -- Integrations with man of the common LSP/completion libs
@@ -83,9 +80,8 @@ return require('packer').startup(function()
     use { -- provides FZF like searching inside projects
         'nvim-telescope/telescope.nvim',
         requires = {
-          {'nvim-lua/popup.nvim'},
-          {'nvim-lua/plenary.nvim'},
-          {'nvim-telescope/telescope-file-browser.nvim'}
+            {'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'},
+            {'nvim-telescope/telescope-file-browser.nvim'}
         },
         config = require("thedelchop.telescope")
     }
@@ -93,22 +89,14 @@ return require('packer').startup(function()
         'kyazdani42/nvim-tree.lua', -- NERDTree like file-explorer written in Lua
         requires = 'kyazdani42/nvim-web-devicons',
         config = function()
-          require'nvim-tree'.setup({
-            hijack_netrw = false,
-            auto_close = true,
-            hide_root_folder = true,
-            view = {
-              width = 40,
-              side = 'right'
-            },
-            filters = {
-              custom = {'.git', 'node_modules', '.cache'}
-            },
-            git = {
-              enable = true,
-              ignore = true
-            }
-          })
+            require'nvim-tree'.setup({
+                hijack_netrw = false,
+                auto_close = true,
+                hide_root_folder = true,
+                view = {width = 40, side = 'right'},
+                filters = {custom = {'.git', 'node_modules', '.cache'}},
+                git = {enable = true, ignore = true}
+            })
         end
 
     }
@@ -116,9 +104,9 @@ return require('packer').startup(function()
     use 'ray-x/lsp_signature.nvim' -- Show function signature when you type
 
     use {
-      'ray-x/navigator.lua',
-      requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'},
-      config = require("thedelchop.navigator")
+        'ray-x/navigator.lua',
+        requires = {'ray-x/guihua.lua', run = 'cd lua/fzy && make'},
+        config = require("thedelchop.navigator")
     }
 
     use {'rrethy/vim-hexokinase', run = 'make hexokinase'} -- Render color vaules in the sidebar
@@ -169,17 +157,15 @@ return require('packer').startup(function()
     use 'ygm2/rooter.nvim'
 
     use { -- Easily browse, preview and search JSON files
-      'gennaro-tedesco/nvim-jqx',
-      config = function()
-        local jqx_config = require('nvim-jqx.config')
+        'gennaro-tedesco/nvim-jqx',
+        config = function()
+            local jqx_config = require('nvim-jqx.config')
 
-        jqx_config.sort = false
-        jqx_config.query_key = 'X'
-        jqx_config.close_window_key = 'q'
-      end
+            jqx_config.sort = false
+            jqx_config.query_key = 'X'
+            jqx_config.close_window_key = 'q'
+        end
     }
-
-    use 'slim-template/vim-slim' -- Slim syntax highlighting for vim.
 
     use 'chrisbra/csv.vim' -- This plugin is used for handling column separated data with Vim, the aim of this plugin is to ease handling these kinds of files
 
@@ -188,12 +174,50 @@ return require('packer').startup(function()
     use 'McAuleyPenney/tidy.nvim' -- A function and autocommand pair that removes all trailing whitespace and newlines at the end of a buffer on save
 
     use { -- Show indententation levels of my code
-      'lukas-reineke/indent-blankline.nvim',
-      config = function ()
-        require("indent_blankline").setup {
-           show_end_of_line = true,
-           space_char_blankline = " ",
-      }
-      end
+        'lukas-reineke/indent-blankline.nvim',
+        config = function()
+            require("indent_blankline").setup {
+                show_end_of_line = true,
+                space_char_blankline = " "
+            }
+        end
     }
+
+    use {
+        'lukas-reineke/lsp-format.nvim',
+        config = function() require("lsp-format").setup({}) end
+    }
+
+    use {
+        'jose-elias-alvarez/null-ls.nvim',
+        requires = {"nvim-lua/plenary.nvim"},
+        config = function()
+            local builtins = require('null-ls').builtins
+
+            require("null-ls").setup({
+                diagnostics_format = "[#{c}](#{s}) #{m}",
+                on_attach = function(client, _)
+                    require"lsp-format".on_attach(client)
+                end,
+                sources = {
+                    builtins.diagnostics.credo.with({
+                        args = {
+                            "credo", "suggest", "--format", "flycheck",
+                            "--read-from-stdin", "$FILENAME"
+                        }
+                    }), builtins.diagnostics.eslint_d,
+                    builtins.diagnostics.gitlint,
+                    builtins.diagnostics.markdownlint, builtins.diagnostics.tsc,
+
+                    builtins.formatting.eslint_d,
+                    builtins.formatting.lua_format,
+                    builtins.formatting.markdownlint, builtins.formatting.mix,
+                    builtins.formatting.prettierd
+                }
+            })
+        end
+
+    }
+
+  
 end)

@@ -88,4 +88,6 @@ augroup('Markdown', function(autocmd)
   autocmd [[FileType markdown setlocal spell]]
 end)
 
+vim.cmd [[cabbrev wq execute "lua vim.lsp.buf.formatting_seq_sync()" <bar> wq]]
+
 require("thedelchop.local_rc").load()
