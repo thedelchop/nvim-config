@@ -91,7 +91,6 @@ return require('packer').startup(function()
         config = function()
             require'nvim-tree'.setup({
                 hijack_netrw = false,
-                auto_close = true,
                 hide_root_folder = true,
                 view = {width = 40, side = 'right'},
                 filters = {custom = {'.git', 'node_modules', '.cache'}},
@@ -195,6 +194,7 @@ return require('packer').startup(function()
             local builtins = require('null-ls').builtins
 
             require("null-ls").setup({
+                log = {enable = true, level = "warn", use_console = "false"},
                 diagnostics_format = "[#{c}](#{s}) #{m}",
                 on_attach = function(client, _)
                     require"lsp-format".on_attach(client)
@@ -206,18 +206,14 @@ return require('packer').startup(function()
                             "--read-from-stdin", "$FILENAME"
                         }
                     }), builtins.diagnostics.eslint_d,
-                    builtins.diagnostics.gitlint,
-                    builtins.diagnostics.markdownlint, builtins.diagnostics.tsc,
-
-                    builtins.formatting.eslint_d,
-                    builtins.formatting.lua_format,
-                    builtins.formatting.markdownlint, builtins.formatting.mix,
-                    builtins.formatting.prettierd
+                    builtins.diagnostics.rubocop, builtins.diagnostics.tsc,
+                    builtins.formatting.eslint_d, builtins.formatting.mix,
+                    builtins.formatting.prettierd, builtins.formatting.rubocop,
+                    builtins.formatting.surface
+                        .with({extra_filetypes = {"eelixir"}})
                 }
             })
         end
 
     }
-
-  
 end)
