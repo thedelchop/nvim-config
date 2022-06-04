@@ -4,14 +4,13 @@ local g = vim.g -- a table to access global variables
 local opt = vim.opt -- to set options
 local cmd = vim.cmd
 
-g.python_host_prog = os.getenv("PYTHON2_PATH")
-g.python3_host_prog = os.getenv("PYTHON_PATH")
+g.python_host_prog = os.getenv("PYTHON_PATH")
 
 opt.updatetime = 100
 opt.autoread = true
 opt.background = "dark"
 opt.backupdir = vim.fn.expand("~/.cache/nvim/bkup")
-opt.completeopt = {'menuone', 'noselect'} -- Completion options (for deoplete)
+opt.completeopt = { 'menuone', 'noselect' } -- Completion options (for deoplete)
 opt.cursorline = false
 opt.directory = vim.fn.expand("~/.cache/nvim/swp")
 opt.expandtab = true -- Use spaces instead of tabs
@@ -40,13 +39,13 @@ opt.tabstop = 2 -- Number of spaces tabs count for
 opt.undofile = true
 opt.undodir = vim.fn.expand("~/.cache/nvim/undo")
 opt.visualbell = true
-opt.wildmode = {'list', 'longest'} -- Command-line completion mode
+opt.wildmode = { 'list', 'longest' } -- Command-line completion mode
 opt.wrap = false -- Disable line wrap
 opt.termguicolors = true
 opt.listchars = {
   trail = '~',
   tab = ">-",
-  nbsp ="␣"
+  nbsp = "␣"
 }
 
 require("thedelchop.plugins")
@@ -69,12 +68,14 @@ require("thedelchop.highlights")
 
 require("thedelchop.keymaps")
 
+require("thedelchop.null_ls")
+
 local showRecentFilesFinder = vim.api.nvim_eval("@%") == "" or vim.api.nvim_eval("filereadable(@%)") == 0
 
 if showRecentFilesFinder then
-    cmd("command! ShowRecentFiles lua require('telescope.builtin').oldfiles({})")
+  cmd("command! ShowRecentFiles lua require('telescope.builtin').oldfiles({})")
 
-    vim.api.nvim_exec("autocmd VimEnter * ShowRecentFiles", false)
+  vim.api.nvim_exec("autocmd VimEnter * ShowRecentFiles", false)
 end
 
 augroup('Guihua', function(autocmd)
