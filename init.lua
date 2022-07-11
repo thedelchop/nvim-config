@@ -6,7 +6,7 @@ local cmd = vim.cmd
 
 g.python_host_prog = os.getenv("PYTHON_PATH")
 
-opt.updatetime = 100
+opt.updatetime = 750
 opt.autoread = true
 opt.background = "dark"
 opt.backupdir = vim.fn.expand("~/.cache/nvim/bkup")

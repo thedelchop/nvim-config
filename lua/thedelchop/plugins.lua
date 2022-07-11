@@ -13,13 +13,8 @@ return require('packer').startup(function()
 
   use 'nvim-lua/plenary.nvim' -- All the lua functions I don't want to write twice.
   use 'kyazdani42/nvim-web-devicons' -- Set of icons for NeoVim that nvim-tree and lspsaga use for icons
-  use 'nvim-lua/popup.nvim' -- An implementation of the Popup API from vim in Neovim. Hope to upstream when complete
-  use 'mjlbach/neovim-ui' -- Provides common set of UI elements for NeoVim
 
   use 'Mofiqul/dracula.nvim' -- provides Dracula colorscheme
-
-  use 'christoomey/vim-tmux-runner' -- A simple, vimscript only, command runner for sending commands from vim to tmux.
-  use 'christoomey/vim-tmux-navigator' -- Navigate in and out of Vim and Tmux seamlessly
 
   use {
     "ur4ltz/surround.nvim",
@@ -28,20 +23,33 @@ return require('packer').startup(function()
     end
   }
 
-  use 'tpope/vim-projectionist' -- Set of use utilities to define things like alternate files and jump locations for all projects
   use 'tpope/vim-repeat' -- Repeat.vim remaps . in a way that plugins can tap into it.
 
   use 'AndrewRadev/splitjoin.vim' -- Switch between one-line and multi-line version of code objects
   use 'b3nj5m1n/kommentary' -- Neovim plugin to comment text in and out, written in lua. Supports commenting out the current line, a visual selection and a motion.
-  use 'matze/vim-move' -- Move text objects up/down indent/dedent using keyboard shorcuts
   use 'farmergreg/vim-lastplace' -- Return to the same location in a file when reopening/revisiting it
 
-  use 'vim-test/vim-test' -- A Vim wrapper for running tests on different granularities.
-  use { -- The ultimate testing plugin for NeoVim
-    'rcarriga/vim-ultest',
-    requires = { "vim-test/vim-test" },
-    run = ":UpdateRemotePlugins"
+  use 'mfussenegger/nvim-dap'
+
+  use {
+    "nvim-neotest/neotest",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-neotest/neotest-vim-test"
+    },
+    config = function()
+      require("neotest").setup({
+        adapters = {
+          require("neotest-vim-test")({})
+        }
+      })
+    end
   }
+
+  use 'vim-test/vim-test'
+  use 'nvim-neotest/neotest-vim-test'
 
   use {
     'windwp/nvim-autopairs',
@@ -58,8 +66,6 @@ return require('packer').startup(function()
   use 'kana/vim-textobj-user' -- Define custom text objects and provides a set of text objects to use
   use 'amiralies/vim-textobj-elixir' -- Provide custom textobjs for Elixir specific syntax
 
-  use { 'npxbr/glow.nvim', run = ":GlowInstall" } -- Glow is a markdown preview plugin using Glow library
-
   use 'neovim/nvim-lspconfig' -- provides lsp servers for nvim lsp client
 
   use 'hrsh7th/cmp-nvim-lsp'
@@ -68,11 +74,12 @@ return require('packer').startup(function()
   use 'hrsh7th/cmp-cmdline'
   use 'hrsh7th/cmp-vsnip'
 
-  use { 'hrsh7th/nvim-cmp', config = require("thedelchop.cmp") }
-
   use 'hrsh7th/vim-vsnip' -- Allow vim to use LSP snippets
   use 'hrsh7th/vim-vsnip-integ' -- Integrations with man of the common LSP/completion libs
   use 'rafamadriz/friendly-snippets' -- Snippets collection for a set of different programming languages for faster development.
+
+
+  use { 'hrsh7th/nvim-cmp', config = require("thedelchop.cmp") }
 
   use 'nvim-telescope/telescope-file-browser.nvim'
 

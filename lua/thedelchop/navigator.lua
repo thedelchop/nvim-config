@@ -3,13 +3,14 @@ return function()
     .protocol
     .make_client_capabilities())
 
-  local servers = {
-    "cssls", "dockerls", "elixirls", "graphql", "html", "jsonls", "yamlls"
-  }
+  local servers = { "cssls", "dockerls", "elixirls", "graphql", "html", "jsonls", "yamlls" }
 
   require('navigator').setup({
     lsp_signature_help = true,
     on_attach = function(client, _)
+
+     -- require "lsp-format".on_attach(client)
+
       vim.cmd [[imap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']]
       vim.cmd [[smap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']]
 
@@ -21,8 +22,9 @@ return function()
     treesitter_analysis = true,
     lsp = {
       format_on_save = true,
-      disable_format_cap = servers,
+      disable_format_cap = { "elixirls", "cssls", "dockerls", "graphql", "html", "jsonls", "yamlls" },
       disply_diagnostic_qf = true,
+      disable_lsp = { 'sumneko_lua' },
       elixirls = { capabilities = capabilities },
       cssls = { capabilities = capabilities },
       dockerls = { capabilities = capabilities },
@@ -30,7 +32,7 @@ return function()
       html = { capabilities = capabilities },
       jsonls = { capabilities = capabilities },
       yamlls = { capabilities = capabilities },
-      servers = servers
+      servers = servers,
     }
   })
 end
