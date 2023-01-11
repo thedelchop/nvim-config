@@ -4,8 +4,6 @@ local g = vim.g -- a table to access global variables
 local opt = vim.opt -- to set options
 local cmd = vim.cmd
 
-g.python_host_prog = os.getenv("PYTHON_PATH")
-
 opt.updatetime = 750
 opt.autoread = true
 opt.background = "dark"
