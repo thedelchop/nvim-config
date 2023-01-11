@@ -194,6 +194,13 @@ return require('packer').startup(function()
 
   use {
     'lukas-reineke/lsp-format.nvim',
-    config = function() require("lsp-format").setup({}) end
+    config = function() require("lsp-format").setup({
+      typescript = {
+        exclude = {"tsserver"}
+      },
+      typescriptreact = {
+        exclude = {"tsserver"}
+      }
+    }) end
   }
 end)
