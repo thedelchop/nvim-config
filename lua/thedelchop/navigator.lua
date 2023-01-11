@@ -22,7 +22,7 @@ return function()
     treesitter_analysis = true,
     lsp = {
       format_on_save = true,
-      disable_format_cap = { "elixirls", "cssls", "dockerls", "graphql", "html", "jsonls", "yamlls" },
+      disable_format_cap = { "elixirls", "cssls", "dockerls", "graphql", "html", "jsonls", "yamlls", "tsserver" },
       disply_diagnostic_qf = true,
       disable_lsp = { 'sumneko_lua' },
       elixirls = { capabilities = capabilities },
