@@ -1,5 +1,6 @@
 return function()
     require("bufferline").setup {
+      options = {
         diagnostics = "nvim_lsp",
         mappings = true,
         tab_size = 36,
@@ -10,5 +11,6 @@ return function()
             return " " .. icon .. count
         end,
         offsets = {{filetype = "NvimTree", text = "File Explorer", text_align = "right"}}
+      }
     }
 end
