@@ -1,5 +1,5 @@
 return function()
-  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp
+  local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp
     .protocol
     .make_client_capabilities())
 
@@ -7,10 +7,7 @@ return function()
 
   require('navigator').setup({
     lsp_signature_help = true,
-    on_attach = function(client, _)
-
-     -- require "lsp-format".on_attach(client)
-
+    on_attach = function()
       vim.cmd [[imap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']]
       vim.cmd [[smap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']]
 
@@ -22,9 +19,9 @@ return function()
     treesitter_analysis = true,
     lsp = {
       format_on_save = true,
+      format_options = { async = true },
       disable_format_cap = { "elixirls", "cssls", "dockerls", "graphql", "html", "jsonls", "yamlls", "tsserver" },
-      disply_diagnostic_qf = true,
-      disable_lsp = { 'sumneko_lua' },
+      disply_diagnostic_qf = false,
       elixirls = { capabilities = capabilities },
       cssls = { capabilities = capabilities },
       dockerls = { capabilities = capabilities },
@@ -32,6 +29,24 @@ return function()
       html = { capabilities = capabilities },
       jsonls = { capabilities = capabilities },
       yamlls = { capabilities = capabilities },
+      tsserver = { capabilities = capabilities },
+      sumneko_lua = {
+        settings = {
+          Lua = {
+            runtime = {
+              -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+              version = "LuaJIT",
+              -- Setup your lua path
+              path = vim.split(package.path, ";")
+            },
+            diagnostics = {
+              enable = true,
+              -- Get the language server to recognize the `vim` global
+              globals = { "vim", "describe", "it", "before_each", "after_each", "teardown", "pending", "use", "use_rocks" }
+            },
+          }
+        }
+      },
       servers = servers,
     }
   })

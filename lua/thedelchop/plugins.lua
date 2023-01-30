@@ -14,7 +14,12 @@ return require('packer').startup(function()
   use 'nvim-lua/plenary.nvim' -- All the lua functions I don't want to write twice.
   use 'kyazdani42/nvim-web-devicons' -- Set of icons for NeoVim that nvim-tree and lspsaga use for icons
 
-  use 'Mofiqul/dracula.nvim' -- provides Dracula colorscheme
+  use {
+    'Mofiqul/dracula.nvim',
+    config = function()
+      require("dracula").setup({})
+    end
+  } -- provides Dracula colorscheme
 
   use {
     "ur4ltz/surround.nvim",
@@ -32,24 +37,53 @@ return require('packer').startup(function()
   use 'mfussenegger/nvim-dap'
 
   use {
+    "ahmedkhalf/project.nvim",
+    config = function()
+      require("project_nvim").setup {
+        ignore_lsp = { "null-ls", "graphql" },
+        patterns = { "package.json", "mix.exs", ".git", "Makefile" },
+        silent_chdir = true
+      }
+    end
+  }
+
+  use {
     "nvim-neotest/neotest",
     requires = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "antoinemadec/FixCursorHold.nvim",
-      "nvim-neotest/neotest-vim-test"
+      "marilari88/neotest-vitest",
+      "jfpedroza/neotest-elixir",
     },
     config = function()
       require("neotest").setup({
+        status = {
+          enabled = true,
+          virtual_text = false,
+          signs = true,
+        },
         adapters = {
-          require("neotest-vim-test")({})
+          require('neotest-vitest'),
+          require("neotest-elixir")({
+            mix_task = { "test" }
+          }),
         }
       })
     end
   }
 
-  use 'vim-test/vim-test'
-  use 'nvim-neotest/neotest-vim-test'
+  use {
+    "folke/neodev.nvim",
+    config = function()
+      require("neodev").setup({
+        library = {
+          plugins = { "neotest" },
+          types = true
+        },
+      })
+    end
+  }
 
   use {
     'windwp/nvim-autopairs',
@@ -77,7 +111,6 @@ return require('packer').startup(function()
   use 'hrsh7th/vim-vsnip' -- Allow vim to use LSP snippets
   use 'hrsh7th/vim-vsnip-integ' -- Integrations with man of the common LSP/completion libs
   use 'rafamadriz/friendly-snippets' -- Snippets collection for a set of different programming languages for faster development.
-
 
   use { 'hrsh7th/nvim-cmp', config = require("thedelchop.cmp") }
 
@@ -109,8 +142,10 @@ return require('packer').startup(function()
 
   use {
     'ray-x/navigator.lua',
-    requires = { 'ray-x/guihua.lua', run = 'cd lua/fzy && make' },
-    config = require("thedelchop.navigator")
+    requires = {
+      { 'ray-x/guihua.lua', run = 'cd lua/fzy && make' },
+      { 'neovim/nvim-lspconfig' }
+    },
   }
 
   use { 'rrethy/vim-hexokinase', run = 'make hexokinase' } -- Render color vaules in the sidebar
@@ -188,19 +223,9 @@ return require('packer').startup(function()
   }
 
   use {
-    'thedelchop/null-ls.nvim',
-    requires = { "nvim-lua/plenary.nvim" }
-  }
-
-  use {
-    'lukas-reineke/lsp-format.nvim',
-    config = function() require("lsp-format").setup({
-      typescript = {
-        exclude = {"tsserver"}
-      },
-      typescriptreact = {
-        exclude = {"tsserver"}
-      }
-    }) end
+    'jose-elias-alvarez/null-ls.nvim',
+    requires = {
+      "nvim-lua/plenary.nvim"
+    }
   }
 end)

@@ -66,6 +66,8 @@ require("thedelchop.highlights")
 
 require("thedelchop.keymaps")
 
+require("thedelchop.navigator")()
+
 require("thedelchop.null_ls")
 
 local showRecentFilesFinder = vim.api.nvim_eval("@%") == "" or vim.api.nvim_eval("filereadable(@%)") == 0
@@ -87,6 +89,6 @@ augroup('Markdown', function(autocmd)
   autocmd [[FileType markdown setlocal spell]]
 end)
 
-vim.cmd [[cabbrev wq execute "lua vim.lsp.buf.formatting_seq_sync()" <bar> wq]]
+vim.cmd [[cabbrev wq execute "lua vim.lsp.buf.format()" <bar> wq]]
 
 require("thedelchop.local_rc").load()
