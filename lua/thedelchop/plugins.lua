@@ -169,9 +169,10 @@ return require('packer').startup(function()
   }
 
   use {
-    'akinsho/nvim-bufferline.lua', -- Buffer line written in Lua, works with Dracula.nvim
-    requires = 'kyazdani42/nvim-web-devicons',
-    config = require("thedelchop.bufferline")
+    'akinsho/bufferline.nvim',
+    tag = "v3.*",
+    requires = 'nvim-tree/nvim-web-devicons',
+    config = require("thedelchop.bufferline"),
   }
 
   use {
