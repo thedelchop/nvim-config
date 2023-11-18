@@ -93,7 +93,7 @@ nnoremap('[t', '<cmd>lua require("neotest").jump.prev({ status = "failed" })<CR>
 nnoremap(']e', '<cmd>lua vim.diagnostic.goto_next()<CR>')
 nnoremap('[e', '<cmd>lua vim.diagnostic.goto_prev()<CR>')
 
-inoremap('<C-i>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
+-- inoremap('<C-i>', '<cmd>lua vim.lsp.buf.signature_help()<CR>')
 
 augroup("JsonSearch", function(autocmd)
   autocmd [[ FileType json nnoremap <buffer> <leader>ll :JqxList<CR> ]]

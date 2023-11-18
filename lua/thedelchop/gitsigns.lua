@@ -1,31 +1,45 @@
 return function()
-    require('gitsigns').setup({
-        attach_to_untracked = false,
-        current_line_blame = true,
-        current_line_blame_opts = {
-          virt_text = true,
-          virt_text_pos = 'eol',
-          delay = 500
-        },
-        keymaps = {
-            noremap = true,
+  require('gitsigns').setup({
+    attach_to_untracked = false,
+    current_line_blame = true,
+    current_line_blame_opts = {
+      virt_text = true,
+      virt_text_pos = 'eol',
+      delay = 500
+    },
+    on_attach = function(bufnr)
+      local gs = package.loaded.gitsigns
 
-            ['n ]h'] = {expr = true, "&diff ? ']c' : '<cmd>lua require\"gitsigns\".next_hunk()<CR>'"},
-            ['n [h'] = {expr = true, "&diff ? '[c' : '<cmd>lua require\"gitsigns\".prev_hunk()<CR>'"},
+      local function map(mode, l, r, opts)
+        opts = opts or {}
+        opts.buffer = bufnr
+        vim.keymap.set(mode, l, r, opts)
+      end
 
-            ['n <leader>gp'] = '<cmd>lua require"gitsigns".preview_hunk()<CR>',
-            ['n <leader>gr'] = '<cmd>lua require"gitsigns".reset_hunk()<CR>',
-            ['n <leader>gR'] = '<cmd>lua require"gitsigns".reset_buffer()<CR>',
-            ['n <leader>gs'] = '<cmd>lua require"gitsigns".stage_hunk()<CR>',
-            ['n <leader>gS'] = '<cmd>lua require"gitsigns".stage_buffer()<CR>',
-            ['n <leader>gu'] = '<cmd>lua require"gitsigns".undo_stage_hunk()<CR>',
-            ['n <leader>gU'] = '<cmd>lua require"gitsigns".reset_buffer_index()<CR>',
+      map('n', ']h', function()
+        if vim.wo.diff then return ']c' end
+        vim.schedule(function() gs.next_hunk() end)
+        return '<Ignore>'
+      end, { expr = true })
 
-            ['v <leader>gr'] = '<cmd>lua require"gitsigns".reset_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
-            ['v <leader>gs'] = '<cmd>lua require"gitsigns".stage_hunk({vim.fn.line("."), vim.fn.line("v")})<CR>',
+      map('n', '[h', function()
+        if vim.wo.diff then return '[c' end
+        vim.schedule(function() gs.prev_hunk() end)
+        return '<Ignore>'
+      end, { expr = true })
 
-            ['o ih'] = ':<C-U>lua require"gitsigns".select_hunk()<CR>',
-            ['x ih'] = ':<C-U>lua require"gitsigns".select_hunk()<CR>'
-        }
-    })
+
+      map('n', '<leader>gp', gs.preview_hunk)
+      map('n', '<leader>gr', gs.reset_hunk)
+      map('n', '<leader>gR', gs.reset_buffer)
+      map('n', '<leader>gs', gs.stage_hunk)
+      map('n', '<leader>gS', gs.stage_buffer)
+      map('n', '<leader>gu', gs.undo_stage_hunk)
+
+      map('v', '<leader>gr', function() gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end)
+      map('v', '<leader>gs', function() gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end)
+      map('o', 'ih', gs.select_hunk)
+      map('x', 'ih', gs.select_hunk)
+    end
+  })
 end

@@ -3,7 +3,7 @@ return function()
     autotag = { enable = true },
     ensure_installed = {
       'bash', 'css', 'dockerfile', 'elixir', 'erlang', 'go', 'graphql', 'heex', 'html', 'javascript', 'jsdoc', 'json',
-      'jsonc', 'lua', 'python', 'query', 'regex', 'ruby', 'scala', 'scss', 'surface', 'toml', 'typescript', 'tsx', 'yaml',
+      'jsonc', 'lua', 'python', 'query', 'regex', 'ruby', 'scss', 'surface', 'toml', 'typescript', 'tsx', 'yaml',
       'vim'
     },
     highlight = { enable = true },

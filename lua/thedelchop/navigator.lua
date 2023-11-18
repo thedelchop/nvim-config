@@ -6,7 +6,7 @@ return function()
   local servers = { "cssls", "dockerls", "elixirls", "graphql", "html", "jsonls", "yamlls" }
 
   require('navigator').setup({
-    lsp_signature_help = true,
+    lsp_signature_help = false,
     on_attach = function()
       vim.cmd [[imap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']]
       vim.cmd [[smap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']]
@@ -19,10 +19,10 @@ return function()
     treesitter_analysis = true,
     lsp = {
       format_on_save = true,
-      format_options = { async = true },
+      format_options = { async = false },
       disable_format_cap = { "elixirls", "cssls", "dockerls", "graphql", "html", "jsonls", "yamlls", "tsserver" },
       disply_diagnostic_qf = false,
-      elixirls = { capabilities = capabilities },
+      elixirls = { filetype = { "elixir", "heex" }, capabilities = capabilities },
       cssls = { capabilities = capabilities },
       dockerls = { capabilities = capabilities },
       graphql = { capabilities = capabilities },
@@ -30,23 +30,6 @@ return function()
       jsonls = { capabilities = capabilities },
       yamlls = { capabilities = capabilities },
       tsserver = { capabilities = capabilities },
-      sumneko_lua = {
-        settings = {
-          Lua = {
-            runtime = {
-              -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-              version = "LuaJIT",
-              -- Setup your lua path
-              path = vim.split(package.path, ";")
-            },
-            diagnostics = {
-              enable = true,
-              -- Get the language server to recognize the `vim` global
-              globals = { "vim", "describe", "it", "before_each", "after_each", "teardown", "pending", "use", "use_rocks" }
-            },
-          }
-        }
-      },
       servers = servers,
     }
   })

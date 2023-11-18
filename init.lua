@@ -4,7 +4,7 @@ local g = vim.g -- a table to access global variables
 local opt = vim.opt -- to set options
 local cmd = vim.cmd
 
-opt.updatetime = 750
+opt.updatetime = 50
 opt.autoread = true
 opt.background = "dark"
 opt.backupdir = vim.fn.expand("~/.cache/nvim/bkup")
@@ -46,9 +46,25 @@ opt.listchars = {
   nbsp = "␣"
 }
 
-require("thedelchop.plugins")
-
 g.mapleader = ";"
+
+-- Bootstrap Lazy.nvim when we start up
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
+vim.opt.rtp:prepend(lazypath)
+
+local plugins = require("thedelchop.plugins")
+
+require("lazy").setup(plugins, opts)
 
 g.matchup_surround_enabled = 1
 
@@ -59,8 +75,6 @@ g.ultest_output_on_line = 0
 
 g.splitjoin_split_mapping = ''
 g.splitjoin_join_mapping = ''
-
-cmd [[colorscheme dracula]]
 
 require("thedelchop.highlights")
 
@@ -91,4 +105,4 @@ end)
 
 vim.cmd [[cabbrev wq execute "lua vim.lsp.buf.format()" <bar> wq]]
 
-require("thedelchop.local_rc").load()
+-- require("thedelchop.local_rc").load()

@@ -1,42 +1,30 @@
-vim.fn.setenv("MACOSX_DEPLOYMENT_TARGET", "10.15")
+return {
 
-require('packer.luarocks').install_commands()
-require('packer.luarocks').setup_paths()
-
-return require('packer').startup(function()
-  use_rocks 'luafilesystem'
-
-  use 'wbthomason/packer.nvim'
-
-  use 'tjdevries/nlua.nvim' -- Lua Development for Neovim
-  use 'norcalli/nvim.lua' -- nvim is an object which contains shortcut/magic methods that are very useful for mappings. use 'tjdevries/astronauta.nvim' -- Until I merge: https://github.com/neovim/neovim/pull/13823 you can use lua keymaps by installing this plugin.
-
-  use 'nvim-lua/plenary.nvim' -- All the lua functions I don't want to write twice.
-  use 'kyazdani42/nvim-web-devicons' -- Set of icons for NeoVim that nvim-tree and lspsaga use for icons
-
-  use {
+  'tjdevries/nlua.nvim', -- Lua Development for Neovim
+  'norcalli/nvim.lua', -- nvim is an object which contains shortcut/magic methods that are very useful for mappings. use 'tjdevries/astronauta.nvim' -- Until I merge: https://github.com/neovim/neovim/pull/13823 you can use lua keymaps by installing this plugin.
+  'nvim-lua/plenary.nvim', -- All the lua functions I don't want to write twice.
+  'nvim-tree/nvim-web-devicons', -- Set of icons for NeoVim that nvim-tree and lspsaga use for icons
+  {
     'Mofiqul/dracula.nvim',
+    lazy = false,
+    priority = 1000,
     config = function()
       require("dracula").setup({})
-    end
-  } -- provides Dracula colorscheme
-
-  use {
+      vim.cmd([[colorscheme dracula]])
+    end,
+  }, -- provides Dracula colorscheme
+  {
     "ur4ltz/surround.nvim",
     config = function()
-      require "surround".setup { mappings_style = "surround" }
+      require("surround").setup { mappings_style = "surround" }
     end
-  }
-
-  use 'tpope/vim-repeat' -- Repeat.vim remaps . in a way that plugins can tap into it.
-
-  use 'AndrewRadev/splitjoin.vim' -- Switch between one-line and multi-line version of code objects
-  use 'b3nj5m1n/kommentary' -- Neovim plugin to comment text in and out, written in lua. Supports commenting out the current line, a visual selection and a motion.
-  use 'farmergreg/vim-lastplace' -- Return to the same location in a file when reopening/revisiting it
-
-  use 'mfussenegger/nvim-dap'
-
-  use {
+  },
+  'tpope/vim-repeat', -- Repeat.vim remaps . in a way that plugins can tap into it.
+  'AndrewRadev/splitjoin.vim', -- Switch between one-line and multi-line version of code objects
+  'b3nj5m1n/kommentary', -- Neovim plugin to comment text in and out, written in lua. Supports commenting out the current line, a visual selection and a motion.
+  'farmergreg/vim-lastplace', -- Return to the same location in a file when reopening/revisiting it
+  'mfussenegger/nvim-dap',
+  {
     "ahmedkhalf/project.nvim",
     config = function()
       require("project_nvim").setup {
@@ -45,11 +33,10 @@ return require('packer').startup(function()
         silent_chdir = true
       }
     end
-  }
-
-  use {
+  },
+  {
     "nvim-neotest/neotest",
-    requires = {
+    dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "antoinemadec/FixCursorHold.nvim",
@@ -71,9 +58,8 @@ return require('packer').startup(function()
         }
       })
     end
-  }
-
-  use {
+  },
+  {
     "folke/neodev.nvim",
     config = function()
       require("neodev").setup({
@@ -83,9 +69,8 @@ return require('packer').startup(function()
         },
       })
     end
-  }
-
-  use {
+  },
+  {
     'windwp/nvim-autopairs',
     config = function()
       require('nvim-autopairs').setup({
@@ -94,109 +79,117 @@ return require('packer').startup(function()
         }
       })
     end
-  }
-  use 'windwp/nvim-ts-autotag' -- Auto close HTML tags
+  },
+  'windwp/nvim-ts-autotag', -- Auto close HTML tags
 
-  use 'kana/vim-textobj-user' -- Define custom text objects and provides a set of text objects to use
-  use 'amiralies/vim-textobj-elixir' -- Provide custom textobjs for Elixir specific syntax
+  'neovim/nvim-lspconfig', -- provides lsp servers for nvim lsp client
 
-  use 'neovim/nvim-lspconfig' -- provides lsp servers for nvim lsp client
+  'hrsh7th/cmp-nvim-lsp',
+  'hrsh7th/cmp-buffer',
+  'hrsh7th/cmp-path',
+  'hrsh7th/cmp-cmdline',
+  'hrsh7th/cmp-vsnip',
 
-  use 'hrsh7th/cmp-nvim-lsp'
-  use 'hrsh7th/cmp-buffer'
-  use 'hrsh7th/cmp-path'
-  use 'hrsh7th/cmp-cmdline'
-  use 'hrsh7th/cmp-vsnip'
+  'hrsh7th/vim-vsnip', -- Allow vim to use LSP snippets
+  'hrsh7th/vim-vsnip-integ', -- Integrations with man of the common LSP/completion libs
+  'rafamadriz/friendly-snippets', -- Snippets collection for a set of different programming languages for faster development.
 
-  use 'hrsh7th/vim-vsnip' -- Allow vim to use LSP snippets
-  use 'hrsh7th/vim-vsnip-integ' -- Integrations with man of the common LSP/completion libs
-  use 'rafamadriz/friendly-snippets' -- Snippets collection for a set of different programming languages for faster development.
+  { 'hrsh7th/nvim-cmp', config = require("thedelchop.cmp") },
 
-  use { 'hrsh7th/nvim-cmp', config = require("thedelchop.cmp") }
+  'nvim-telescope/telescope-file-browser.nvim',
 
-  use 'nvim-telescope/telescope-file-browser.nvim'
-
-  use { -- provides FZF like searching inside projects
+  'nvim-lua/popup.nvim',
+  { -- provides FZF like searching inside projects
     'nvim-telescope/telescope.nvim',
-    requires = {
-      { 'nvim-lua/popup.nvim' }, { 'nvim-lua/plenary.nvim' },
-      { 'nvim-telescope/telescope-file-browser.nvim' }
+    dependencies = {
+      'nvim-lua/popup.nvim',
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope-file-browser.nvim',
     },
     config = require("thedelchop.telescope")
-  }
-  use {
-    'kyazdani42/nvim-tree.lua', -- NERDTree like file-explorer written in Lua
-    requires = 'kyazdani42/nvim-web-devicons',
+  },
+
+  {
+    'nvim-tree/nvim-tree.lua', -- NERDTree like file-explorer written in Lua
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
       require 'nvim-tree'.setup({
-        hijack_netrw = false,
-        view = { hide_root_folder = true, width = 40, side = 'right' },
+        hijack_netrw = true,
+        renderer = {
+          root_folder_label = false
+        },
+        view = { width = 40, side = 'right' },
         filters = { custom = { '.git', 'node_modules', '.cache' } },
         git = { enable = true, ignore = true }
       })
     end
+  },
 
-  }
+  'ray-x/lsp_signature.nvim', -- Show function signature when you type
 
-  use 'ray-x/lsp_signature.nvim' -- Show function signature when you type
+  { 'ray-x/guihua.lua', build = 'cd lua/fzy && make' },
 
-  use {
+  {
     'ray-x/navigator.lua',
-    requires = {
-      { 'ray-x/guihua.lua', run = 'cd lua/fzy && make' },
-      { 'neovim/nvim-lspconfig' }
+    dependencies = {
+      'ray-x/guihua.lua',
+      'neovim/nvim-lspconfig'
     },
-  }
+  },
 
-  use { 'rrethy/vim-hexokinase', run = 'make hexokinase' } -- Render color vaules in the sidebar
+  { 'rrethy/vim-hexokinase', build = 'make hexokinase' }, -- Render color vaules in the sidebar
 
-  use 'sindrets/diffview.nvim'
+  'sindrets/diffview.nvim',
 
-  use {
-    'TimUntersberger/neogit',
-    requires = { 'nvim-lua/plenary.nvim', 'sindrets/diffview.nvim' },
+  {
+    'NeogitOrg/neogit',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope.nvim',
+      'sindrets/diffview.nvim',
+    },
     config = function()
-      require('neogit').setup({ integrations = { diffview = true } })
+      require('neogit').setup({
+        integrations = {
+          telescope = true,
+          diffview = true,
+        }
+      })
     end
-  }
+  },
 
-  use {
+  'tpope/vim-fugitive',
+
+  {
     'lewis6991/gitsigns.nvim',
-    requires = { -- Super fast git decorations implemented purely in lua/teal.
-      'nvim-lua/plenary.nvim'
-    },
+    dependencies = 'nvim-lua/plenary.nvim',
     config = require("thedelchop.gitsigns")
-  }
-
-  use {
+  },
+  {
     'akinsho/bufferline.nvim',
-    tag = "v3.*",
-    requires = 'nvim-tree/nvim-web-devicons',
+    version = "v3.*",
+    dependencies = 'nvim-tree/nvim-web-devicons',
     config = require("thedelchop.bufferline"),
-  }
-
-  use {
+  },
+  {
     'hoob3rt/lualine.nvim',
     config = function() -- A blazing fast and easy to configure neovim statusline written in pure lua.
       require('lualine').setup { options = { theme = 'dracula-nvim' } }
     end
-  }
-
-  use {
+  },
+  {
     'nvim-treesitter/nvim-treesitter', -- The goal of nvim-treesitter is both to provide a simple and easy way to use the interface for tree-sitter in Neovim
-    requires = 'windwp/nvim-ts-autotag',
-    run = ':TSUpdate',
+    build = ':TSUpdate',
     config = require("thedelchop.treesitter")
-  }
+  },
 
-  use 'nvim-treesitter/nvim-treesitter-refactor'
-  use 'nvim-treesitter/nvim-treesitter-textobjects'
+  'nvim-treesitter/nvim-treesitter-textobjects',
 
-  use { "folke/which-key.nvim", config = require("thedelchop.which_key") }
+  { "folke/which-key.nvim", config = require("thedelchop.which_key") },
 
-  use 'ygm2/rooter.nvim'
+  'ygm2/rooter.nvim',
 
-  use { -- Easily browse, preview and search JSON files
+  { -- Easily browse, preview and search JSON files
     'gennaro-tedesco/nvim-jqx',
     config = function()
       local jqx_config = require('nvim-jqx.config')
@@ -205,28 +198,21 @@ return require('packer').startup(function()
       jqx_config.query_key = 'X'
       jqx_config.close_window_key = 'q'
     end
-  }
+  },
 
-  use 'chrisbra/csv.vim' -- This plugin is used for handling column separated data with Vim, the aim of this plugin is to ease handling these kinds of files
+  'chrisbra/csv.vim', -- This plugin is used for handling column separated data with Vim, the aim of this plugin is to ease handling these kinds of files
 
-  use 'kazhala/close-buffers.nvim' -- This plugin allows you to quickly delete multiple buffers based on the conditions provided.
+  'kazhala/close-buffers.nvim', -- This plugin allows you to quickly delete multiple buffers based on the conditions provided.
 
-  use 'McAuleyPenney/tidy.nvim' -- A function and autocommand pair that removes all trailing whitespace and newlines at the end of a buffer on save
+  'McAuleyPenney/tidy.nvim', -- A function and autocommand pair that removes all trailing whitespace and newlines at the end of a buffer on save
 
-  use { -- Show indententation levels of my code
+  { -- Show indententation levels of my code
     'lukas-reineke/indent-blankline.nvim',
+    main = "ibl",
     config = function()
-      require("indent_blankline").setup {
-        show_end_of_line = true,
-        space_char_blankline = " "
-      }
+      require("ibl").setup()
     end
-  }
+  },
 
-  use {
-    'jose-elias-alvarez/null-ls.nvim',
-    requires = {
-      "nvim-lua/plenary.nvim"
-    }
-  }
-end)
+  { 'jose-elias-alvarez/null-ls.nvim', dependencies = "nvim-lua/plenary.nvim" }
+}

@@ -37,7 +37,10 @@ null_ls.setup({
       filetypes = { "graphql", "json", "yaml", "markdown" }
     }),
     builtins.code_actions.eslint_d,
-    builtins.formatting.mix,
-    builtins.formatting.surface.with({ extra_filetypes = { "eelixir" } })
+    builtins.formatting.mix.with({ extra_filetypes = { "heex" } }),
+    builtins.formatting.surface.with({ extra_filetypes = { "eelixir" } }),
+    builtins.formatting.sqlfluff.with({
+      extra_args = { "--dialect", "mysql" }, -- change to your dialect
+    }),
   },
 })
